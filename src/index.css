@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Définition de la police personnalisée */
+@font-face {
+  font-family: 'myFont';
+  src: url('../public/Questrial-Regular.ttf') format('truetype');
+}
+
+/* Définition globale de la police pour tous les éléments */
+* {
+  font-family: 'myFont', sans-serif;
+}
+
+/* Utilisation de @apply pour des transitions globales */
+html {
+  @apply transition-colors duration-100;
+}
+
+/* Ajout de styles globaux dans la couche de base */
+@layer base {
+  font {
+    font-weight: 800;
+     /* Applique la graisse de police globalement */
+  }
+}
+
+/* Classe personnalisée pour le formulaire */
+@layer components {
+  .tailwind-form {
+    @apply w-full px-4 py-2 border border-gray-300 focus:border-b-orange_union rounded-lg focus:outline-none  focus:border-b-[2.8px] text-[14px] placeholder-gray-900;
+  }
+}
