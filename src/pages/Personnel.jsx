@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FaAd, FaArrowLeft, FaBars, FaCamera, FaChartLine, FaCheckCircle, FaCommentDots, FaDAndD, FaDonate, FaDotCircle, FaGlobeAfrica, FaPause, FaSchool, FaStop, FaSun, FaUpload } from "react-icons/fa";
-import { FaAngleLeft, FaArrowsToDot, FaCameraRetro, FaGlobe, FaMoon, FaPagelines, FaSchoolCircleCheck } from "react-icons/fa6";
+import { FaAd, FaArrowLeft, FaBars, FaCamera, FaChartLine, FaCheckCircle, FaCommentDots, FaDAndD, FaDonate, FaDotCircle, FaGlobeAfrica, FaPause, FaSave, FaSchool, FaStop, FaSun, FaUpload } from "react-icons/fa";
+import { FaAngleLeft, FaArrowsToDot, FaCameraRetro, FaGlobe, FaInfo, FaMoon, FaPagelines, FaSchoolCircleCheck } from "react-icons/fa6";
 import { FcCompactCamera } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import $ from "jquery";
 import Info_personnel from "../composant/personnel/info_personnel";
 import TableExample from "../composant/ExempleTable";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 
 
@@ -14,43 +15,68 @@ const Personnel = () => {
   const [misehoInfo_personnel, setFisehoanaPersonnel] = useState(false)
   const [miseholiste_personnel, setFisehoanaListePersonel] = useState(true)
   const [blur, setBlur] = useState(false)
+  const { enqueueSnackbar } = useSnackbar();
 
   const [pourcentage_feminin, setPourcentage_feminin] = useState(30)
   const [pourcentage_masculin, setPourcentage_masculin] = useState(70)
 
+  //pour aller au information de chaque personnel
   const show_infoPersonnel = () => {
     setFisehoanaListePersonel(false)
     setFisehoanaPersonnel(true)
   }
+
+  const test_clic = () => {
+    
+     
+      enqueueSnackbar('Personnel ajouté avec succès !', { variant: 'success' });
+     
+   
+  };
+
+
+  //pour aller a la liste des personnels
   const showListePersonnel = () => {
     setFisehoanaListePersonel(true)
     setFisehoanaPersonnel(false)
   }
+
+  // pour disparaitre le fond floux 
   const hide_blur = () => {
-  
-    $('.form_ajout_personnel').animate({ top :"-50%" }, 100)
-    setTimeout(()=>{
+    $('.form_ajout_personnel').animate({ top: "-50%" }, 100)
+    $('.div_suprimer_personnel').animate({ left: "-50%" }, 100)
+
+    setTimeout(() => {
       setBlur(false)
     }, [100])
   }
+  //pour apparaitre le fond floux
   const show_blur = () => {
     setBlur(true)
   }
-  
-  const show_form_ajout = () =>{
-   show_blur()
-   $('.form_ajout_personnel').animate({ top :"50%" }, 500)
+
+  //pour apparaitre le formulaire d'ajout
+  const show_form_ajout = () => {
+    show_blur()
+    $('.form_ajout_personnel').animate({ top: "50%" }, 500)
+  }
+
+  //pour apparaitre le div de suppression
+  const show_div_supression_personnel = () => {
+    show_blur()
+    $('.div_suprimer_personnel').animate({ left: "50%" }, 500)
   }
 
   return (
     <div className="px-2 pt-4 text-gray-900 dark:bg-black">
+      
 
-      <div onClick={hide_blur} className={`fixed top-0 left-0 z-30 w-full h-[100vh] bg-[#000000a4] dark:bg-[#ffffff0a] cursor-pointer ${blur ? "block" : "hidden"
-        }`} style={{
+      {/* div blur  */}
+      <div onClick={hide_blur}
+        className={`fixed top-0 left-0 z-30 w-full h-[100vh] bg-[#000000a4] dark:bg-[#ffffff0a] cursor-pointer ${blur ? "block" : "hidden"}`}
+        style={{
           backdropFilter: 'blur(3px)'
         }}></div>
-
-
       {/* formulaire d'ajout employer  */}
       <div className=" w-[90vw] md:w-[70vw] lg:w-[50vw] h-auto bg-white rounded-[1em] fixed z-50 px-4 py-4 dark:bg-[#121212] dark:text-gray-100 form_ajout_personnel" style={{
         top: '-50%', left: '50%', transform: 'translate(-50%, -50%)'
@@ -69,10 +95,14 @@ const Personnel = () => {
             <div>
               <input type="text" placeholder="Nom" className="mb-4 tailwind-form" />
               <input type="text" placeholder="Prenom" className="mb-4 tailwind-form" />
-              <div className="flex items-start justify-between space-x-2">
+              <div className="flex flex-col items-start mb-4 space-y-1 sm:justify-between sm:items-center sm:flex-row sm:space-x-2">
                 <label htmlFor="naissance" className="mr-2 text-[11px]">Date de Naissance</label>
                 <input type="date" id="naissance" placeholder="Prenom" className="mb-4 tailwind-form" />
-                <input type="text" placeholder="Lieu" className="mb-4 tailwind-form" />
+              </div>
+
+              <div className="flex flex-col items-start mb-4 space-y-1 sm:justify-between sm:flex-row sm:space-x-2 sm:items-center">
+                <label htmlFor="naissance" className="mr-2 text-[11px]">Lieu de Naissance</label>
+                <input type="text" placeholder="Lieu" className="mb-4 tailwind-form" id="lieu_de_naissance" />
               </div>
               <input type="text" placeholder="Num CIN" className="mb-4 tailwind-form" />
               <select name="" id="" className="tailwind-form">
@@ -99,30 +129,53 @@ const Personnel = () => {
               </select>
             </div>
           </div>
-          <button  className="flex items-center justify-center px-4 py-1 my-3 space-x-3 text-white rounded bg-bleue_union_500">
-            <FaDAndD />
-            <p>Ajouter</p>
+          <button onClick={show_form_ajout} className="flex items-center justify-center space-x-3 my-4 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
+            <FaSave />
+            <span className="text-[13px]">Enregistrer</span>
           </button>
 
         </form>
 
       </div>
 
+      {/* div pour suprimer les Personnel  */}
+      <div className="w-[60vw] md:w-[40vw] lg:w-[30vw] h-auto bg-white rounded-[1em] fixed z-50 px-4 py-4 dark:bg-[#121212] dark:text-gray-100 div_suprimer_personnel " style={{
+        top: '50%', left: '-50%', transform: 'translate(-50%, -50%)'
+      }}>
+
+        <div className="flex items-center justify-between mt-1 mb-4">
+          <div className="flex items-center justify-start space-x-2 rounded">
+            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
+              <FaInfo />
+            </div>
+            <font className="text-[12px] ">Supression du Personnels : U-8</font>
+          </div>
+          <img src="image_union/logo_union.svg" alt="logo" className="w-8" />
+
+        </div>
+
+        <p className=" text-[13px] pl-4">Voulez-vous vraiment suprimer ?</p>
+        <div className="relative flex items-center justify-start space-x-2 top-1 lg:left-[16vw] xl:left-[18vw] text-[14px]">
+          <button className="px-2 text-white rounded bg-red_union_500">
+            OK
+          </button>
+          <button className="px-2 text-white rounded bg-bleue_union_500" onClick={hide_blur}>
+            Annuler
+          </button>
+        </div>
+      </div>
 
 
-      <div className={`bg-white rounded-[1em] md:p-4 px-1 pt-2 pb-4 ${miseholiste_personnel ? '' : 'hidden'}`}>
 
+      <div className={`bg-white rounded-[1em] dark:bg-[#131313] md:p-4 px-1 pt-2 pb-4 ${miseholiste_personnel ? '' : 'hidden'}`}>
         {/* ilay div en grid mapizara ho col span 9 sy col span 3  */}
         <div className="grid w-full gap-4 md:grid-cols-12">
-
-
-
           {/* ilay div col span 3  */} {/* misy ilay div kely roa en flex flex-col*/}
           <div className="flex flex-col items-center justify-start space-y-4 md:col-span-3 sm:flex-row sm:space-x-2 md:flex-col">
             {/* ilay div misy bar masculin  */}
-            <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4">
+            <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4 dark:bg-[#42424232] dark:text-gray-300">
               <div className="text-[13px] flex items-center justify-between">
-                <font>Comparaison</font>
+                <font className="text-gray-900 dark:text-gray-300" onClick={test_clic}>Comparaison</font>
                 <FaChartLine className="text-orange_union" />
               </div>
               <p className="text-[11px] text-gray-400 mt-4">Ceci montre les totalités des Personneles suivant leur sexe</p>
@@ -160,9 +213,9 @@ const Personnel = () => {
 
                 </div>
                 <div className="my-4">
-                  <div className="flex items-center justify-between">
-                    <font className="text-[12px]">Masculin</font>
-                    <font className="text-[12px]">70%</font>
+                  <div className="flex items-center justify-between dark:text-gray-300">
+                    <font className="text-[12px] dark:text-gray-300 text-gray-900">Masculin</font>
+                    <font className="text-[12px] dark:text-gray-300 text-gray-900">70%</font>
                   </div>
                   <div className="w-full bg-gray-300 my1">
                     <div className={`w-[70%] h-1 rounded-full bg-bleue_union_500`} style={{ width: pourcentage_masculin + "%" }}>
@@ -183,9 +236,9 @@ const Personnel = () => {
               </div>
             </div>
             {/* ilay div misy bar feminin */}
-            <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4">
+            <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4 dark:bg-[#42424232] dark:text-gray-300">
               <div className="text-[13px] flex items-center justify-between">
-                <font>Comparaison</font>
+                <font className="text-gray-900 dark:text-gray-300">Comparaison</font>
                 <FaChartLine className="text-orange_union" />
               </div>
               <p className="text-[11px] text-gray-400 mt-4">Ceci montre les totalités des Personneles suivant leur sexe</p>
@@ -211,12 +264,10 @@ const Personnel = () => {
                   </div>
 
                 </div>
-
-
                 <div className="my-4">
-                  <div className="flex items-center justify-between">
-                    <font className="text-[12px]">Feminin</font>
-                    <font className="text-[12px]">30%</font>
+                  <div className="flex items-center justify-between ">
+                    <font className="text-[12px] dark:text-gray-300 text-gray-900">Feminin</font>
+                    <font className="text-[12px] dark:text-gray-300 text-gray-900">30%</font>
                   </div>
                   <div className="w-full my-1 bg-gray-300">
                     <div className={` h-1 rounded-full bg-orange_union`} style={{ width: pourcentage_feminin + "%" }}>
@@ -235,31 +286,16 @@ const Personnel = () => {
                   <FaDotCircle />
                 </div>
               </div>
-
-
             </div>
           </div>
-
-
-
-          <div className="md:col-span-9 md:shadow md:rounded-[1em] px-1 md:px-2 py-2 bg-white w-[75vw] sm:w-[80vw] md:w-full">
-            <TableExample show_infoPersonnel={show_infoPersonnel} show_form_ajout={show_form_ajout} />
-
+          {/* ilay div mis table  */}
+          <div className="md:col-span-9 md:shadow md:rounded-[1em] px-1 md:px-2 py-2 bg-white w-[75vw] sm:w-[80vw] text-gray-900 md:w-full dark:bg-[#42424232] dark:text-gray-300">
+            <TableExample show_infoPersonnel={show_infoPersonnel} show_form_ajout={show_form_ajout} show_div_supression_personnel={show_div_supression_personnel} />
           </div>
-
         </div>
-
       </div>
-
-
-
-
-
-
       {/* info personnel  */}
       <Info_personnel misehoInfo_personnel={misehoInfo_personnel} showListePersonnel={showListePersonnel} />
-
-
     </div>
   );
 };

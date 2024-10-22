@@ -11,7 +11,7 @@ const MonCalendrier = () => {
   };
 
   return (
-    <div className='w-30 h-15'>
+    <div className='w-[15em] h-[6rem]'>
       <h1>Calendrier</h1>
       <Calendar onChange={onChange} value={date} />
       <p>Date sélectionnée : {date.toDateString()}</p>

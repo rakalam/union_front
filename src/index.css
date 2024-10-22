@@ -22,6 +22,7 @@ html {
 @layer base {
   font {
     font-weight: 800;
+   
      /* Applique la graisse de police globalement */
   }
 }
@@ -32,3 +33,5 @@ html {
     @apply w-full px-4 py-2 border border-gray-300 focus:border-b-orange_union rounded-lg focus:outline-none  focus:border-b-[2.8px] text-[14px] placeholder-gray-900;
   }
 }
+
+

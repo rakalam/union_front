@@ -14,6 +14,7 @@ const Sidebar = () => {
 
   const clic_lien = (index) => {
     setActivelink(index);
+    localStorage.setItem('activelink', index)
   };
 
   const entrer = (id) => {
@@ -45,7 +46,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 z-10 w-16 px-3 pt-4 duration-100 bg-white h-[100%] lg:w-56 dark:bg-[#42424232] dark:text-white">
+    <div className="fixed top-0 left-0 z-10 w-16 px-3 pt-4 duration-100 bg-white h-[100%] lg:w-56 dark:bg-[#42424232] dark:text-white shadow">
       {/* logo */}
       <div className="flex items-end w-full mb-3 lg:px-5">
         <div className="rounded">
@@ -63,8 +64,8 @@ const Sidebar = () => {
         {SIDEBAR_LINK.map((link, index) => (
           <li
             key={index}
-            className={`font-medium rounded lg:px-5 py-2 hover:border-l-orange_union hover:border-l-4 hover:bg-white dark:hover:bg-gray-700 hover:md:px-7 duration-100
-           ${activelink === index ? 'bg-white dark:bg-gray-700' : ''
+            className={`font-medium rounded lg:px-5 py-2 hover:border-l-orange_union hover:border-l-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:md:px-7 duration-100
+           ${activelink === index ? 'bg-gray-200 border-l-4 border-l-orange_union dark:bg-gray-700' : ''
               }`}
           >
             <Link

@@ -4,7 +4,7 @@ import { Typography, Button } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { dark } from "@mui/material/styles/createPalette";
 import { GrAdd } from "react-icons/gr";
-import { FaArrowDown, FaArrowUp, FaFilter, FaInfo, FaPen, FaSearch, FaTrash } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaDotCircle, FaFilter, FaInfo, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import { ImSpinner11 } from "react-icons/im";
 
 const personnel = {
@@ -116,14 +116,11 @@ const personnel = {
   ]
 }
 
-const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
+const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supression_personnel}) => {
   const [donne, setDonne] = useState([])
-
   useEffect(() => {
     setDonne(personnel)
   }, [])
-
-
   const columns = [
     {
       name: 'id',
@@ -134,7 +131,6 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
         )
       }
     },
-
     {
       name: 'photos',
       options: {
@@ -142,43 +138,67 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
         customBodyRender: (value, tableMeta) => (
           <div className="flex items-center justify-center w-full">
             <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
-                border-[2px]  rounded-full  ${tableMeta.rowData[3] === "masculin" ? "border-orange-500 text-white bg-orange-300"
-                : "text-white bg-blue-300 border-blue-500"}`}>
+                border-[2px]  rounded-full  ${tableMeta.rowData[5] === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                : "border-orange-500 text-white bg-orange-300"}`}>
               {value}
             </div>
           </div>
         ),
         filter: false
       }
-
     },
     {
       name: 'nom'
     },
-
-
+    {
+      name: 'etablissement',
+      label:"Etabl"
+    },
+    {
+      name: 'filiere',
+      label:"Filiere"
+    },
     {
       name: 'sexe',
       options: {
         customBodyRender: (value) => (
-          <div className={`flex items-center justify-center px-1 py-0.5 rounded-full text-white
-            ${value === "masculin" ? "bg-gradient-to-br from-blue-300 via-gray-400  to-gray-600" : "bg-gradient-to-br from-jaune_union_500 via-orange_union_100  to-orange_union"}
+          <div className={`flex items-center justify-center px-1 py-0.5 rounded-full text-gray-950 font-extrabold space-x-2
+            ${value === "masculin" ? "bg-gray-300" : "bg-gray-200"}
           `}>
-            {value}
+            <FaDotCircle className={` ${value === "masculin" ? "text-bleue_union_500" : "text-orange_union"}`} />
+            <span>{value}</span>
           </div>
         )
       }
     },
     {
       name: 'nb_absent',
-      label: 'Absent'
+      label: 'Absent',
+      options: {
+        customBodyRender: (value) => (
+          <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center w-8 h-8 font-bold bg-gray-100 rounded-full text-orange_union">
+              {value}
+            </div>
+          </div>
+        )
+      }
     },
     {
       name: 'nb_retard',
-      label: 'Retard'
+      label: 'Retard',
+      options: {
+        customBodyRender: (value) => (
+          <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center w-8 h-8 font-bold bg-gray-200 rounded-full">
+              {value}
+            </div>
+          </div>
+        )
+      }
     },
     {
-      name: 'Action',
+      name: '',
       options: {
         customBodyRender: () => (
 
@@ -191,7 +211,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
               <FaPen />
             </div>
 
-            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
+            <div onClick={show_div_supression_personnel} className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
               <FaTrash />
             </div>
           </div>
@@ -202,8 +222,6 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
       }
     }
   ]
-
-
 
   const options = {
     textLabels: {
@@ -229,7 +247,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
     selectableRows: false,
     responsive: "standard",
     elevation: 0,
-    rowsPerPage: 7,
+    rowsPerPage: 6,
     rowsPerPageOptions: [7, 10, 20],
 
   };
@@ -240,8 +258,8 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
 
     },
     palette: {
-      // background: {
-      //   paper: "#1e293b",
+      //   background: {
+      //   paper: "rgba(0, 0, 0, 0)",
       //   default: "#0f172a"
       // },
       // mode: "dark"
@@ -252,15 +270,14 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
         styleOverrides: {
           head: {
             padding: "1px",
-
             background: "#09aac6",
+            borderBottom : "2px solid orange",
             color: "white",
-            // borderBottom: "2px solid gray",
             '&:first-of-type': {
-              borderRadius: "10px 0 0 10px", // Arrondir uniquement le premier header (à gauche)
+              borderRadius: "10px 0 0 0", // Arrondir uniquement le premier header (à gauche)
             },
             '&:last-of-type': {
-              borderRadius: "0 10px 10px 0", // Arrondir uniquement le dernier header (à droite)
+              borderRadius: "0 10px 0 0", // Arrondir uniquement le dernier header (à droite)
             },
           },
 
@@ -284,12 +301,12 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
 
   return (
 
-    <ThemeProvider theme={getMuiTheme()}>
+    <ThemeProvider theme={getMuiTheme()} >
 
       {/* En-tête personnalisé */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-4 text-gray-900 dark:text-gray-300">
         {/* Titre stylisé */}
-        <font className="text-[15px]">Liste des personnel</font>
+        <font className="text-[15px] dark:text-gray-300 text-gray-900">Liste des personnel</font>
 
         {/* Bouton avec icône pour ajouter */}
         <button onClick={show_form_ajout} className="flex items-center justify-center space-x-3 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
@@ -297,13 +314,10 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
           <span className="hidden md:flex sm:hidden">Ajouter nouvelle Personnel</span>
         </button>
       </div>
-
       <MUIDataTable
-
         data={personnel.liste}
         columns={columns}
         options={options}
-
       />
 
       <style jsx>{`
@@ -311,9 +325,11 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout }) => {
           text-align: center !important; /* Exemple : changer l'alignement du texte au centre */
         }
         .MuiIconButton-root {
-          color: black; /* Exemple : changer la couleur des icônes par défaut en vert */
-          font-size: 20px;
+          color: #6b7280; /* Exemple : changer la couleur des icônes par défaut en vert */
         }
+        .MuiIconButton-root:hover {
+          color: #e6631f;
+        }  
       `}</style>
 
     </ThemeProvider>

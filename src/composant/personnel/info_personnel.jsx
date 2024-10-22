@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 const Info_personnel = ({ misehoInfo_personnel, showListePersonnel }) => {
   return (
     <>
+    
       <div className={`bg-white rounded-[1em] p-4 flex md:items-center justify-center relative h-auto  ${misehoInfo_personnel ? '' : 'hidden'}`}>
 
         {/* ilay fond absolute manga manga  */}
@@ -85,11 +86,10 @@ const Info_personnel = ({ misehoInfo_personnel, showListePersonnel }) => {
           </div>
 
 
-          {/* ilay misy planning sy historique des pointage  */}
+          {/* ilay misy planning sy historique des pointage  col-span-9 */}
           <div className="md:col-span-8 xl:col-span-9 h-auto bg-white rounded-[1em] shadow p-3">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between text-gray-900">
               <font className="px-1">Planning</font>
-             
             </div>
 
             {/* liste des planning*/}
@@ -405,6 +405,7 @@ const Info_personnel = ({ misehoInfo_personnel, showListePersonnel }) => {
 
         </div>
       </div>
+      
     </>
   )
 }

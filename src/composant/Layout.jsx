@@ -6,11 +6,11 @@ import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <div className="flex overflow-hidden bg-gray-50 dark:bg-black">
-      <div className="h-[100vh]">
+      <div className="h-[100vh] shadow">
 
         <Sidebar />
       </div>
-      <div className="w-full h-auto px-2 ml-16 lg:ml-56 ">
+      <div className="w-full h-auto px-2 ml-16 shadow lg:ml-56 ">
         <Hedear />
         <Outlet />
       </div>
