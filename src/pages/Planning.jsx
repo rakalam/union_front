@@ -1,10 +1,562 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaClock, FaLock, FaMoon, FaPen, FaPrint, FaSave, FaSearch, FaSun } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa6';
 import { GrAdd } from 'react-icons/gr';
 import $ from "jquery"
+import ReactPaginate from 'react-paginate';
+import ListePlanning from '../composant/planning/listePlanning';
+
+
+
+const plannings = {
+  "liste": [
+    {
+      "id": "U-1",
+      "sexe": "feminin",
+      "photos": "RJ",
+      "nom": "RAKALADY",
+      "lundi_deb": "08:00",
+      "lundi_fin": "16:00",
+
+      "mardi_deb": "08:00",
+      "mardi_fin": "16:00",
+
+      "mercredi_deb": "OFF",
+      "mercredi_fin": "OFF",
+
+      "jeudi_deb": "13:00",
+      "jeudi_fin": "21:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "feminin",
+      "photos": "ZX",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "feminin",
+      "photos": "TB",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "masculin",
+      "photos": "RK",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+    {
+      "id": "U-2",
+      "sexe": "femini",
+      "photos": "KO",
+      "nom": "Rakalam",
+      "lundi_deb": "09:00",
+      "lundi_fin": "15:00",
+
+      "mardi_deb": "OFF",
+      "mardi_fin": "OFF",
+
+      "mercredi_deb": "08:00",
+      "mercredi_fin": "16:00",
+
+      "jeudi_deb": "14:00",
+      "jeudi_fin": "22:00",
+
+      "vendredi_deb": "14:00",
+      "vendredi_fin": "22:00",
+
+      "samedi_deb": "OFF",
+      "samedi_fin": "OFF",
+
+      "dimanche_deb": "08:00",
+      "dimanche_fin": "16:00"
+    },
+
+
+
+  ]
+}
+
+
+
+
 const Planning = () => {
+  const [listePlanning, setListePlanning] = useState([])
+  const [pageCourrant, setPageCourant] = useState(1)
+  const [planningPerPage] = useState(6)
+
+  const indexOfDernierPlanning = pageCourrant * planningPerPage
+  const indexOfPremierPlanning = indexOfDernierPlanning - planningPerPage
+  const planningCourant = listePlanning.slice(indexOfPremierPlanning, indexOfDernierPlanning)
+
+  const paginate = nombrePage => setPageCourant(nombrePage)
+
   const [blur, setBlur] = useState(false)
+
+  useEffect(() => {
+    setListePlanning(plannings.liste)
+
+  }, [])
 
   // les variables pour les formulaires 
   const [id_personnel, setId_personnel] = useState('')
@@ -40,12 +592,6 @@ const Planning = () => {
 
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-
-  const alll = () => {
-    alert(lundi_deb)
-    // console.log(lundi_deb);
-
-  }
 
   const show_blur = () => {
     setBlur(true)
@@ -124,8 +670,8 @@ const Planning = () => {
     setdimanche_deb(time);
     setdimanche_fin(calculer_heure_fin(time))
   };
-  
-  const soumettre =(e)=>{
+
+  const soumettre = (e) => {
     e.preventDefault()
     alert('vita !')
   }
@@ -152,8 +698,8 @@ const Planning = () => {
           </div>
         </div>
         <form onSubmit={soumettre}>
-           {/* nom des personnels  */}
-           <select name="" className='mb-4 tailwind-form'>
+          {/* nom des personnels  */}
+          <select name="" className='mb-4 tailwind-form'>
             <option disabled selected>seletionner presonnel</option>
             <option value="shift">Rakalam</option>
             <option value="OFF">Faneva</option>
@@ -433,623 +979,14 @@ const Planning = () => {
 
       {/* table  */}
       <div className='w-full overflow-x-auto'>
-        <table className='min-w-full'>
-          <thead className='border-b-2 border-gray-300'>
-
-            <th className='w-[9em]'>
-              <div className='flex items-center justify-center py-[20px] space-y-2 font-bold rounded bg-bleue_union_500 text-white text-[12px]'>
-                Personnel
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Lundi</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">1</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Mardi</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">2</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Mercredi</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">3</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Jeudi</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">4</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Vendredi</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">5</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Samedi</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">6</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Dimanche</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">7</font>
-              </div>
-            </th>
-
-            <th className='w-[7em]'>
-              <div className='flex flex-col items-center justify-center pb-1 space-y-2 font-bold rounded bg-gray-50'>
-                <font className="pt-1 text-[12px]">Action</font>
-                <font className="flex flex-col items-center justify-center w-6 h-6 mb-1 space-y-4 text-white rounded-full bg-bleue_union_500">1</font>
-              </div>
-            </th>
-
-          </thead>
-
-          <tbody>
-
-            <tr className='border-b border-gray-300'>
-              <td>
-                <div className='flex items-center justify-between px-3 py-2 bg-gray-100 rounded'>
-                  <div className='w-8 border-[2px] h-8 rounded-full font-bold text-white bg-orange-300 border-orange_union flex items-center justify-center px-2 py-2'>
-                    HB
-                  </div>
-                  <div className='flex flex-col items-center justify-center -space-y-1'>
-                    <font>U-8</font>
-                    <p className='text-[11px]'>Rakalam</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    08:00 - 16:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-                    <FaPen />
-                  </div>
-
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-                    <FaTrash />
-                  </div>
-                </div>
-              </td>
-
-
-
-            </tr>
-
-            <tr className='border-b border-gray-300'>
-              <td>
-                <div className='flex items-center justify-between px-3 py-2 bg-gray-100 rounded'>
-                  <div className='w-8 border-[2px] h-8 rounded-full font-bold text-white bg-orange-300 border-orange_union flex items-center justify-center px-2 py-2'>
-                    HB
-                  </div>
-                  <div className='flex flex-col items-center justify-center -space-y-1'>
-                    <font>U-8</font>
-                    <p className='text-[11px]'>Rakalam</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    08:00 - 16:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-                    <FaPen />
-                  </div>
-
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-                    <FaTrash />
-                  </div>
-                </div>
-              </td>
-
-
-
-            </tr>
-
-
-
-            <tr className='border-b border-gray-300'>
-              <td>
-                <div className='flex items-center justify-between px-3 py-2 bg-gray-100 rounded'>
-                  <div className='w-8 border-[2px] h-8 rounded-full font-bold text-white bg-orange-300 border-orange_union flex items-center justify-center px-2 py-2'>
-                    HB
-                  </div>
-                  <div className='flex flex-col items-center justify-center -space-y-1'>
-                    <font>U-8</font>
-                    <p className='text-[11px]'>Rakalam</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    08:00 - 16:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-                    <FaPen />
-                  </div>
-
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-                    <FaTrash />
-                  </div>
-                </div>
-              </td>
-
-
-
-            </tr>
-
-
-            <tr className='border-b border-gray-300'>
-              <td>
-                <div className='flex items-center justify-between px-3 py-2 bg-gray-100 rounded'>
-                  <div className='w-8 border-[2px] h-8 rounded-full font-bold text-white bg-orange-300 border-orange_union flex items-center justify-center px-2 py-2'>
-                    HB
-                  </div>
-                  <div className='flex flex-col items-center justify-center -space-y-1'>
-                    <font>U-8</font>
-                    <p className='text-[11px]'>Rakalam</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    08:00 - 16:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-                    <FaPen />
-                  </div>
-
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-                    <FaTrash />
-                  </div>
-                </div>
-              </td>
-
-
-
-            </tr>
-
-
-            <tr className='border-b border-gray-300 '>
-              <td>
-                <div className='flex items-center justify-between px-3 py-2 bg-gray-100 rounded'>
-                  <div className='w-8 border-[2px] h-8 rounded-full font-bold text-white bg-orange-300 border-orange_union flex items-center justify-center px-2 py-2'>
-                    HB
-                  </div>
-                  <div className='flex flex-col items-center justify-center -space-y-1'>
-                    <font>U-8</font>
-                    <p className='text-[11px]'>Rakalam</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    08:00 - 16:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white bg-gray-800 rounded '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaMoon /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    14:00 - 22:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex flex-col items-center justify-center px-2 py-1 space-y-2 text-white rounded bg-bleue_union_500 '>
-                  <div className='flex items-center justify-between w-full text-[11px]'>
-                    <div> <FaClock /></div>
-                    <div> <FaSun /></div>
-                  </div>
-
-                  <div className='font-bold'>
-                    10:00 - 20:00
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div className='flex items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
-                  <font>OFF</font>
-                </div>
-              </td>
-
-              <td>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-                    <FaPen />
-                  </div>
-
-                  <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-                    <FaTrash />
-                  </div>
-                </div>
-              </td>
-
-
-
-            </tr>
-          </tbody>
-          <tfoot className='text-end'>
-            {/* Pagination */}
-          </tfoot>
-        </table>
+        <ListePlanning
+          listePlanning={planningCourant}
+          planningPerPage={planningPerPage}
+          totalPlanning={listePlanning.length}
+          paginate={paginate}
+          pageCourrant={pageCourrant}
+        />
       </div>
-
-
-
-
 
     </div>
   );

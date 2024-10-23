@@ -5,7 +5,7 @@ import { FcCompactCamera } from "react-icons/fc";
 import { TiUserAdd } from "react-icons/ti";
 import $ from "jquery";
 import Info_personnel from "../composant/personnel/info_personnel";
-import TableExample from "../composant/ExempleTable";
+import TableExample from "../composant/personnel/ListePersonnel";
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
 
@@ -70,7 +70,6 @@ const Personnel = () => {
   return (
     <div className="px-2 pt-4 text-gray-900 dark:bg-black">
       
-
       {/* div blur  */}
       <div onClick={hide_blur}
         className={`fixed top-0 left-0 z-30 w-full h-[100vh] bg-[#000000a4] dark:bg-[#ffffff0a] cursor-pointer ${blur ? "block" : "hidden"}`}

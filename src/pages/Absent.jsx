@@ -3,7 +3,6 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Clock from "../composant/pointage/Clock";
 import MonCalendrier from "../composant/calendrier";
-import ListeRetard from "../composant/pointage/ListeRetard";
 import ListeAbsent from "../composant/pointage/ListeAbsent";
 import { IoMdAlarm, IoMdAlert, IoMdSave } from "react-icons/io";
 import { FaSave } from "react-icons/fa";
@@ -11,7 +10,7 @@ import { FaSave } from "react-icons/fa";
 
 
 
-const Retard = () => {
+const Absent = () => {
 
 
   return (
@@ -19,8 +18,7 @@ const Retard = () => {
 
       <div className="bg-white rounded-[1em] dark:bg-[#131313] p-2 w-full">
         <div className="grid gap-4 md:grid-cols-12">
-
-          <div className="md:col-span-8 rounded-[1em]">
+          <div className="md:col-span-8 rounded-[1em] dark:bg-[#131313] bg-white ">
             <div className="grid w-full grid-cols-2 gap-4">
 
               {/* juste clock  */}
@@ -29,12 +27,12 @@ const Retard = () => {
               </div>
 
               {/* style  */}
-              <div className="bg-white rounded-lg shadow">
+              <div className="bg-white rounded-lg shadow dark:bg-[#42424232] dark:text-gray-300">
               </div>
             </div>
 
             <div className="w-full px-3 py-2 my-4 bg-white rounded-lg shadow dark:bg-[#42424232]">
-              <ListeRetard />
+              <ListeAbsent />
             </div>
 
 
@@ -42,13 +40,13 @@ const Retard = () => {
 
           <div className="md:col-span-4 h-auto rounded-[1em]">
             {/* juste clock  */}
-            <div className="p-4 bg-white rounded-lg shadow dark:bg-[#42424232]">
+            <div className="p-4 bg-white rounded-lg shadow">
               <MonCalendrier />
             </div>
-            <div className="w-full px-3 py-2 my-4 rounded-lg shadow h-[14em] bg-white">
+            <div className="w-full px-3 py-2 my-4 rounded-lg shadow h-[14em] bg-white dark:bg-[#42424232] dark:text-gray-300">
 
               <div className='flex items-center justify-between py-1'>
-                <font className="text-[13px]"> Pointage Retard</font>
+                <font className="text-[13px]"> Pointage Absent</font>
                 <div className="flex items-center justify-center w-6 h-6 text-white rounded bg-orange_union">
                   <IoMdAlarm className='text-[12px]' />
                 </div>
@@ -67,8 +65,7 @@ const Retard = () => {
                   </select>
                   <label htmlFor="personnel" className="text-[12px]">Date</label>
                   <input type="date" name="" id="" className="tailwind-form" />
-                  <label htmlFor="personnel" className="text-[12px]">Heure d'arrive</label>
-                  <input type="time" name="" id="" className="tailwind-form" />
+                  
 
                 </div>
 
@@ -88,4 +85,4 @@ const Retard = () => {
   );
 };
 
-export default Retard;
+export default Absent;

@@ -1,12 +1,22 @@
 import React, { useEffect } from "react";
+import { FaArrowRight } from "react-icons/fa";
 
-const Compte = () => {
-  useEffect(() => {
-    localStorage.setItem("titre", "Compte");
-  }, []);
+const Compte = ({hide_compte}) => {
 
   return (
-    <div className="text-gray-900  border-gray-100 h-[90vh] p-3 overflow-y-scroll md:overflow-hidden"></div>
+    <>
+
+      <div className='flex items-center justify-between px-4 py-2 bg-white rounded-tr-[1em] rounded-tl-[1em]'>
+        <font className="text-[13px]">Compte</font>
+        <div
+        onClick={hide_compte}
+         className="flex items-center justify-center w-6 h-6 text-white rounded cursor-pointer bg-orange_union">
+          <FaArrowRight className='text-[12px]' />
+        </div>
+      </div>
+      <hr />
+
+    </>
   );
 };
 

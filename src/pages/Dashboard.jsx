@@ -14,9 +14,7 @@ import {
 } from "react-icons/fa";
 import { ImSpinner11 } from "react-icons/im";
 import { RiAccountPinCircleFill, RiBarChartGroupedLine } from "react-icons/ri";
-import MyPieChart from "../composant/Pichart";
-import MonCalendrier from "../composant/calendrier";
-import { FaMessage } from "react-icons/fa6";
+
 import { AiOutlineSchedule } from "react-icons/ai";
 import { IoMdAlarm } from "react-icons/io";
 import { MdWorkHistory } from "react-icons/md";
@@ -383,13 +381,13 @@ const Dashboard = () => {
 
             <div className="py-2 ">
               <table className="text-center w-[100%]">
-                <thead className="px-2 py-4 h-8 rounded-full text-white bg-gray-500 text-[12px]">
-                  <th style={{borderRadius :'4px 0 0 4px'}}>Photos</th>
+                <thead className="px-2 py-4 h-8 text-white bg-bleue_union_500 text-[12px] border-b-[2px] border-b-orange_union">
+                  <th style={{borderRadius :'1em 0 0 0'}}>Photos</th>
                   <th>Identifiant</th>
                   <th>Nom Prenom</th>
                   <th>Nb retard</th>
                   <th>Nb absent</th>
-                  <th style={{borderRadius :'0 4px 4px 0'}}>Status</th>
+                  <th style={{borderRadius :'0 1em 0 0'}}>Status</th>
                 </thead>
                 <tbody className="text-[11px] md:text-[13px]">
                   <tr className="border-b">

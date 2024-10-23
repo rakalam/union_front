@@ -22,16 +22,16 @@ html {
 @layer base {
   font {
     font-weight: 800;
-   
-     /* Applique la graisse de police globalement */
+
+    /* Applique la graisse de police globalement */
   }
 }
 
 /* Classe personnalisée pour le formulaire */
 @layer components {
   .tailwind-form {
-    @apply w-full px-4 py-2 border border-gray-300 focus:border-b-orange_union rounded-lg focus:outline-none  focus:border-b-[2.8px] text-[14px] placeholder-gray-900;
+    @apply w-full px-4 py-2 border border-gray-300 focus:border-b-orange_union rounded-lg
+     focus:outline-none focus:border-b-[2.8px] text-[14px] placeholder-gray-900
+      dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600
   }
 }
-
-
