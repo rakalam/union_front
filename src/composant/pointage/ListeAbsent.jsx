@@ -6,162 +6,93 @@ import { GrAdd } from "react-icons/gr";
 import { FaPen, FaTrash } from "react-icons/fa";
 
 
-const absent = 
-{
-  "liste": [
-    {
-      "id": "1",
-      "id_pers": "U-8",
-      "photos": "RJ",
-      "nom": "RAKALADY Jean Ramanana Soa",
-      "date_retard": "02 Oct 2024",
-   
-    },
 
-    {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
+const ListeAbsent = ({ show_ajout, listeAbsentTrans, show_modif, show_div_supression }) => {
 
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Ramanana Soa",
-        "date_retard": "02 Oct 2024",
-     
-      },
-  ]
-}
-
-const ListeAbsent = () => {
-  const [donne, setDonne] = useState([])
-  useEffect(() => {
-    setDonne(absent)
-  }, [])
   const columns = [
     {
-      name: 'id_pers',
-      label: "NUM",
+      name: 'id',
+      label: "ID_kely",
+      options: {
+        display: "excluded", // Cache la colonne `id` dans la table
+        filter: false
+      },
+    },
+    {
+      name: 'identifiant',
+      label: 'ID',
       options: {
         customBodyRender: (value) => (
           <font>{value}</font>
-        )
-      }
-    },
-    {
-      name: 'photos',
-      options: {
-
-        customBodyRender: (value) => (
-          <div className="flex items-center justify-center w-full">
-            <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold border-orange-500 text-white bg-orange-300
-                border-[2px]  rounded-full`}>
-              {value}
-            </div>
-          </div>
         ),
         filter: false
       }
     },
     {
-      name: 'nom'
+      name: 'avatar',
+      label: 'Avatar',
+      options: {
+        customBodyRenderLite: (dataIndex) => {
+          const photos = listeAbsentTrans[dataIndex].avatar
+          const sexe = listeAbsentTrans[dataIndex].sexe
+          return (
+            <div className="flex items-center justify-center w-full">
+              <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
+                    border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                  : "border-orange-500 text-white bg-orange-300"}`}>
+                {photos}
+              </div>
+            </div>
+          );
+        },
+        filter: false
+      }
     },
     {
-      name: 'date_retard',
-      label:"Date"
+      name: 'prenom',
+      label: "Prenom",
+      options: {
+        filter: false
+      },
     },
-  
+    {
+      name: 'date_absent',
+      label: "Date Absent"
+    },
+    {
+      name: 'jour',
+      label: "Jour"
+    },
+
     {
       name: '',
       options: {
-        customBodyRender: () => (
+        customBodyRenderLite: (dataIndex) => {
+          const tout_donnes = listeAbsentTrans[dataIndex];
+          const id = listeAbsentTrans[dataIndex].id;
+          const date_absent = listeAbsentTrans[dataIndex].date_absent;
+          return (
+            <div className="flex items-center justify-center space-x-2">
 
-          <div className="flex items-center justify-center space-x-2">
-            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-              <FaPen />
+              <div
+                onClick={() => show_modif(tout_donnes, date_absent)}
+                className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
+                <FaPen />
+              </div>
+
+              <div
+                onClick={() => show_div_supression(id)}
+                className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
+                <FaTrash />
+              </div>
             </div>
-
-            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-              <FaTrash />
-            </div>
-          </div>
-
-
-        ),
+          )
+        },
         filter: false
       }
     }
   ]
+
 
   const options = {
     textLabels: {
@@ -184,11 +115,12 @@ const ListeAbsent = () => {
         filterTable: "Filtrer le tableau",
       },
     },
+
     selectableRows: false,
     responsive: "standard",
     elevation: 0,
-    rowsPerPage: 4,
-    rowsPerPageOptions: [7, 10, 20],
+    rowsPerPage: 7,
+    rowsPerPageOptions: [7, 10, 16],
 
   };
 
@@ -197,13 +129,22 @@ const ListeAbsent = () => {
       fontFamily: "myFont",
 
     },
+    palette: {
+      mode: localStorage.getItem('theme'),
+      ...(localStorage.getItem('theme') === "dark" && {
+        background: {
+          paper: "rgba(0, 0, 0, 0)"
+        },
+      }),
+
+    },
     components: {
       MuiTableCell: {
         styleOverrides: {
           head: {
             padding: "1px",
             background: "#09aac6",
-            borderBottom : "2px solid orange",
+            borderBottom: "2px solid orange",
             color: "white",
             '&:first-of-type': {
               borderRadius: "10px 0 0 0", // Arrondir uniquement le premier header (à gauche)
@@ -241,13 +182,15 @@ const ListeAbsent = () => {
         <font className="text-[13px] dark:text-gray-300 text-gray-900">Liste des Absent</font>
 
         {/* Bouton avec icône pour ajouter */}
-        <button  className="flex items-center justify-center space-x-3 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
+        <button
+          onClick={show_ajout}
+          className="flex items-center justify-center space-x-3 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
           <GrAdd />
           <span className="hidden md:flex sm:hidden">Pointer un absent</span>
         </button>
       </div>
       <MUIDataTable
-        data={absent.liste}
+        data={listeAbsentTrans}
         columns={columns}
         options={options}
       />

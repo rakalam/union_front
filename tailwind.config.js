@@ -13,6 +13,7 @@ export default {
         bleue_union_500 : '#09aac6',
         jaune_union_500 : '#f4c30f',
         red_union_500 : 'red',
+        sombre_bg : '#ffffff0a'
       }
     },
   },

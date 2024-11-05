@@ -21,11 +21,11 @@ const MyBarChart = () => {
   const radius = 5; // Ajuste le rayon des coins ici
 
   return (
-    <div style={{ width: "100%", height: 285 , fontSize:'11px'}}>
+    <div style={{ width: "100%", height: 160 , fontSize:'11px'}}>
       <ResponsiveContainer>
         <BarChart data={data}>
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
-          <XAxis dataKey="name" />
+          {/* <XAxis dataKey="name" /> */}
           <YAxis />
           <Tooltip />
           <Legend />

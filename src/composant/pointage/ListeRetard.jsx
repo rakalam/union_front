@@ -7,149 +7,106 @@ import { GrAdd } from "react-icons/gr";
 import { FaArrowDown, FaArrowUp, FaDotCircle, FaFilter, FaInfo, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import { ImSpinner11 } from "react-icons/im";
 
-const retard = {
-  "liste": [
-    {
-      "id": "1",
-      "id_pers": "U-8",
-      "photos": "RJ",
-      "nom": "RAKALADY Jean Dieu",
-      "date_retard": "12 Oct 2024",
-      "nb_heure": "2 heure",
-   
 
-    },
-
-    {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Dieu",
-        "date_retard": "12 Oct 2024",
-        "nb_heure": "2 heure",
-     
-  
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Dieu",
-        "date_retard": "12 Oct 2024",
-        "nb_heure": "2 heure",
-     
-  
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Dieu",
-        "date_retard": "12 Oct 2024",
-        "nb_heure": "2 heure",
-     
-  
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Dieu",
-        "date_retard": "12 Oct 2024",
-        "nb_heure": "2 heure",
-     
-  
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Dieu",
-        "date_retard": "12 Oct 2024",
-        "nb_heure": "2 heure",
-     
-  
-      },
-
-      {
-        "id": "1",
-        "id_pers": "U-8",
-        "photos": "RJ",
-        "nom": "RAKALADY Jean Dieu",
-        "date_retard": "12 Oct 2024",
-        "nb_heure": "2 heure",
-     
-  
-      },
-
-  ]
-}
-
-const ListeRetard = () => {
+const ListeRetard = ({ show_ajout, listeDesRetards, show_modif, show_div_supression }) => {
   const [donne, setDonne] = useState([])
   const [moDe, setMode] = useState('light')
   useEffect(() => {
-    setDonne(retard)
     setMode(localStorage.getItem('theme'))
   }, [])
   const columns = [
     {
-      name: 'id_pers',
-      label: "NUM",
+      name: 'id',
+      label: "ID_kely",
+      options: {
+        display: "excluded", // Cache la colonne `id` dans la table
+        filter: false
+      },
+    },
+    {
+      name: 'identifiant',
+      label: 'ID',
       options: {
         customBodyRender: (value) => (
           <font>{value}</font>
-        )
+        ), 
+        filter:false
       }
     },
     {
-      name: 'photos',
+      name: 'avatar',
+      label: 'Avatar',
       options: {
-
-        customBodyRender: (value) => (
-          <div className="flex items-center justify-center w-full">
-            <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold border-orange-500 text-white bg-orange-300
-                border-[2px]  rounded-full`}>
-              {value}
+        customBodyRenderLite: (dataIndex) => {
+          const photos = listeDesRetards[dataIndex].avatar
+          const sexe = listeDesRetards[dataIndex].sexe
+          return (
+            <div className="flex items-center justify-center w-full">
+              <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
+                    border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                  : "border-orange-500 text-white bg-orange-300"}`}>
+                {photos}
+              </div>
             </div>
-          </div>
-        ),
+          );
+        },
         filter: false
       }
     },
     {
-      name: 'nom'
+      name: 'prenom',
+      label: "Prenom",
+      options: {
+        filter: false
+      },
     },
     {
       name: 'date_retard',
-      label:"Date"
+      label: "Date Retard"
     },
     {
-      name: 'nb_heure',
-      label:"Nb heure"
+      name: 'jour',
+      label: "Jour"
     },
-  
+    {
+      name: 'nb_heure_retard',
+      label: "Nb heure",
+      options: {
+        customBodyRender: (value) => (
+          <div className="px-2 py-1 bg-gray-100 rounded text-gray-950 dark:text-white dark:bg-[transparent]">
+           <font> {value}</font>
+          </div>
+        ), 
+        filter:false
+      }
+    },
+
     {
       name: '',
       options: {
-        customBodyRender: () => (
+        customBodyRenderLite: (dataIndex) => {
+         
+           const  prenom = listeDesRetards[dataIndex].prenom
+           const  date_retard = listeDesRetards[dataIndex].date_retard
+           const tout_donnes = listeDesRetards[dataIndex];
+           const id = listeDesRetards[dataIndex].id;
+          return (
+            <div className="flex items-center justify-center space-x-2">
+         
+              <div 
+              onClick={() => show_modif(tout_donnes, prenom, date_retard)} 
+              className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
+                <FaPen />
+              </div>
 
-          <div className="flex items-center justify-center space-x-2">
-            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-              <FaPen />
+              <div 
+              onClick={()=>show_div_supression(id)} 
+              className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
+                <FaTrash />
+              </div>
             </div>
-
-            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-              <FaTrash />
-            </div>
-          </div>
-
-
-        ),
+          )
+        },
         filter: false
       }
     }
@@ -179,8 +136,8 @@ const ListeRetard = () => {
     selectableRows: false,
     responsive: "standard",
     elevation: 0,
-    rowsPerPage: 4,
-    rowsPerPageOptions: [7, 10, 20],
+    rowsPerPage: 7,
+    rowsPerPageOptions: [7, 10, 16],
 
   };
 
@@ -190,14 +147,12 @@ const ListeRetard = () => {
 
     },
     palette: {
-      mode: moDe,
-      ...(moDe === "dark" && {
-        background :{
-          paper: "red"
+      mode: localStorage.getItem('theme'),
+      ...(localStorage.getItem('theme') === "dark" && {
+        background: {
+          paper: "rgba(0, 0, 0, 0)"
         },
       }),
-
-     
     },
     components: {
       MuiTableCell: {
@@ -205,7 +160,7 @@ const ListeRetard = () => {
           head: {
             padding: "1px",
             background: "#09aac6",
-            borderBottom : "2px solid orange",
+            borderBottom: "2px solid orange",
             color: "white",
             '&:first-of-type': {
               borderRadius: "10px 0 0 0", // Arrondir uniquement le premier header (à gauche)
@@ -243,13 +198,15 @@ const ListeRetard = () => {
         <font className="text-[13px] dark:text-gray-300 text-gray-900">Liste des retards</font>
 
         {/* Bouton avec icône pour ajouter */}
-        <button  className="flex items-center justify-center space-x-3 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
+        <button
+          onClick={show_ajout}
+          className="flex items-center justify-center space-x-3 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
           <GrAdd />
           <span className="hidden md:flex sm:hidden">Pointer un retard</span>
         </button>
       </div>
       <MUIDataTable
-        data={retard.liste}
+        data={listeDesRetards}
         columns={columns}
         options={options}
       />

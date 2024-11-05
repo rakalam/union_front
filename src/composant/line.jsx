@@ -10,18 +10,22 @@ import {
 
 // Données du graphique
 const data = [
-  { name: "Jan", uv: 45, pv: 44, amt: 24 },
+  { name: "Jan", uv: 45, pv: 44, amt: 294 },
   { name: "Feb", uv: 49, pv: 53, amt: 22 },
   { name: "Mar", uv: 39, pv: 78, amt: 22 },
   { name: "Apr", uv: 47, pv: 58, amt: 20 },
   { name: "May", uv: 58, pv: 48, amt: 21 },
   { name: "Jun", uv: 23, pv: 38, amt: 25 },
   { name: "Jun", uv: 33, pv: 58, amt: 25 },
-  { name: "Jun", uv: 23, pv: 48, amt: 25 },
-  { name: "Jun", uv: 33, pv: 38, amt: 25 },
-  { name: "Jun", uv: 43, pv: 68, amt: 25 },
-  { name: "Jun", uv: 53, pv: 40, amt: 25 },
-  { name: "Jun", uv: 23, pv: 30, amt: 25 },
+
+  
+  // { name: "Jun", uv: 23, pv: 48, amt: 25 },
+  // { name: "Jun", uv: 33, pv: 38, amt: 25 },
+  // { name: "Jun", uv: 43, pv: 68, amt: 25 },
+  // { name: "Jun", uv: 53, pv: 40, amt: 25 },
+  // { name: "Jun", uv: 23, pv: 30, amt: 25 },
+
+
 ];
 
 // Composant du chart
@@ -48,7 +52,7 @@ const MyAreaChart = () => {
             </linearGradient>
           </defs>
 
-          {/* <XAxis dataKey="name" /> */}
+          <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
 

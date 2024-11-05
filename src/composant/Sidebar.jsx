@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BsFillBarChartLineFill } from "react-icons/bs";
-import { FaUserTie, FaArrowLeft, FaSignOutAlt } from "react-icons/fa";
-import { AiOutlineSchedule } from "react-icons/ai";
+import { FaUserTie, FaArrowLeft, FaSignOutAlt, FaChartLine, FaUser, FaUserAlt, FaUserCheck } from "react-icons/fa";
+import { AiOutlineLogin, AiOutlineSchedule } from "react-icons/ai";
 import { RiAccountPinCircleFill } from "react-icons/ri";
-import { IoMdAlarm } from "react-icons/io";
-import { MdWorkHistory } from "react-icons/md";
+import { IoMdAlarm, IoMdAnalytics, IoMdGitBranch, IoMdPeople, IoMdSearch } from "react-icons/io";
+import { MdHouse, MdWorkHistory } from "react-icons/md";
 import $ from "jquery";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaUserGroup } from "react-icons/fa6";
 
-const Sidebar = ({ show_compte }) => {
+const Sidebar = () => {
   const [activelink, setActivelink] = useState(0);
 
   const clic_lien = (index) => {
@@ -37,12 +37,12 @@ const Sidebar = ({ show_compte }) => {
 
 
   const SIDEBAR_LINK = [
-    { id: 1, path: "/", name: "Dashboard", icon: BsFillBarChartLineFill },
-    { id: 2, path: "/personnel", name: "Personnel", icon: FaUserTie },
-    { id: 3, path: "non", name: "Compte", icon: RiAccountPinCircleFill },
-    { id: 4, path: "/planning", name: "Planning", icon: AiOutlineSchedule },
-    { id: 5, path: "/retard", name: "Retard", icon: IoMdAlarm },
-    { id: 6, path: "/presence", name: "Absence", icon: MdWorkHistory },
+    { id: 1, path: "/logic", name: "Statistique", icon: FaChartLine },
+    { id: 2, path: "/logic/personnel", name: "Personnel", icon: FaUserGroup },
+    { id: 3, path: "/logic/planning", name: "Planning", icon: AiOutlineSchedule },
+    { id: 4, path: "/logic/retard", name: "Retard", icon: IoMdAlarm },
+    { id: 5, path: "/logic/presence", name: "Absence", icon: MdWorkHistory },
+    { id: 6, path: "/logic/recherche", name: "Recherche", icon: IoMdSearch },
   ];
 
   return (
@@ -50,7 +50,7 @@ const Sidebar = ({ show_compte }) => {
       {/* logo */}
       <div className="flex items-end w-full mb-3 lg:px-5">
         <div className="rounded">
-          <img src="image_union/logo_union.svg" alt="logo" className="w-8" />
+          <img src="../image_union/logo_union.svg" alt="logo" className="w-8" />
         </div>
         <div className="hidden ml-4 lg:block">
           <p className="font-bold">Union</p>
@@ -62,42 +62,7 @@ const Sidebar = ({ show_compte }) => {
 
       <ul className="mt-10 space-y-5">
         {SIDEBAR_LINK.map((link, index) => (
-          link.path === "non" ?
-          <li
-          onClick={show_compte}
-          key={index}
-          className={`font-medium rounded lg:px-5 py-2 hover:border-l-orange_union hover:border-l-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:md:px-7 duration-100 cursor-pointer
-          ${activelink === index ? 'bg-gray-200 border-l-4 border-l-orange_union dark:bg-gray-700' : ''
-            }`}
-        >
-          <span
-            onClick={() => clic_lien(index)}
-            className="relative flex items-center justify-center lg:justify-start md:space-x-5"
-          >
-            <span
-              className="text-gray-500 dark:text-gray-100"
-              onMouseEnter={() => entrer(link.id)}
-              onMouseLeave={() => leave(link.id)}
-            >
-              {link.icon()}
-            </span>
-            <span className="hidden text-[13px] text-gray-950 lg:flex dark:text-gray-100">
-              {link.name}
-            </span>
-
-            <span
-              id={"id" + link.id}
-              style={{
-                left: "15vw",
-                opacity: "0",
-              }}
-              className="absolute z-50 px-4 py-1 font-semibold text-gray-900 duration-200 bg-gray-100 rounded shadow-sm lg:hidden"
-            >
-              {link.name}
-            </span>
-          </span>
-        </li>
-            :
+        
             <li
               key={index}
               className={`font-medium rounded lg:px-5 py-2 hover:border-l-orange_union hover:border-l-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:md:px-7 duration-100
@@ -136,11 +101,11 @@ const Sidebar = ({ show_compte }) => {
       </ul>
 
       <div>
-        <img src="image_union/pers.png" alt="" srcset="" />
+        <img src="../image_union/pers.png" alt="" srcset="" />
       </div>
 
       <div onMouseEnter={entrer_dec} onMouseLeave={sortir_dec} className="absolute left-0 flex items-center justify-center w-full py-2 space-x-4 text-white cursor-pointer bg-bleue_union_500 bottom-4">
-        <FaArrowLeft />
+        <AiOutlineLogin/>
         <span className="hidden lg:flex" >Deconnexion</span>
         <span className="absolute z-50 px-4 py-1 font-semibold text-gray-900 duration-200 bg-gray-100 rounded shadow-sm lg:hidden deconnexion"
           style={{

@@ -1,168 +1,83 @@
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { Typography, Button } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { dark } from "@mui/material/styles/createPalette";
 import { GrAdd } from "react-icons/gr";
 import { FaArrowDown, FaArrowUp, FaDotCircle, FaFilter, FaInfo, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import { ImSpinner11 } from "react-icons/im";
 
-const personnel = {
-  "liste": [
-    {
-      "id": "U-1",
-      "photos": "RJ",
-      "nom": "RAKALADY Jean Dieu",
-      "etablissement": "EMIT",
-      "filiere": "Informatique",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "feminin",
-      "nb_absent": 0,
-      "nb_retard": 0,
+const TableExample = ({ show_infoPersonnel, show_form_ajout, show_div_supression_personnel, donne_table_trans, show_form_modif }) => {
 
-    },
-    {
-      "id": "U-1",
-      "photos": "RJ",
-      "nom": "RAKALADY Jean Dieu",
-      "etablissement": "EMIT",
-      "filiere": "Informatique",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "masculin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    },
-    {
-      "id": "U-1",
-      "photos": "RJ",
-      "nom": "RAKALADY Jean Dieu",
-      "etablissement": "EMIT",
-      "filiere": "Informatique",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "masculin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    },
-    {
-      "id": "U-2",
-      "photos": "FB",
-      "nom": "FRACOIS Bastien",
-      "etablissement": "DEGS",
-      "filiere": "Economie",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "feminin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    },
-    {
-      "id": "U-3",
-      "photos": "BG",
-      "nom": "BOMBARETA Gambie Fafa",
-      "etablissement": "ISTE",
-      "filiere": "Agronomie",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "masculin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    },
-    {
-      "id": "U-4",
-      "photos": "BG",
-      "nom": "BOMBARETA Gambie Fafa",
-      "etablissement": "ISTE",
-      "filiere": "Agronomie",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "masculin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    },
-    {
-      "id": "U-5",
-      "photos": "BG",
-      "nom": "BOMBARETA Gambie Fafa",
-      "etablissement": "ISTE",
-      "filiere": "Agronomie",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "feminin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    },
-    {
-      "id": "U-6",
-      "photos": "BG",
-      "nom": "BOMBARETA Gambie Fafa",
-      "etablissement": "ISTE",
-      "filiere": "Agronomie",
-      "naissance": "11/06/202",
-      "compte": "MH-1248 ,MH-UN-Tolo",
-      "sexe": "masculin",
-      "nb_absent": 0,
-      "nb_retard": 0,
-
-    }
-  ]
-}
-
-const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supression_personnel}) => {
-  const [donne, setDonne] = useState([])
   useEffect(() => {
-    setDonne(personnel)
+
   }, [])
   const columns = [
     {
       name: 'id',
-      label: "NUM",
+      label: "ID_kely",
+      options: {
+        display: "excluded", // Cache la colonne `id` dans la table
+        filter: false
+      },
+    },
+    {
+      name: 'identifiant',
+      label: 'ID',
       options: {
         customBodyRender: (value) => (
           <font>{value}</font>
-        )
-      }
-    },
-    {
-      name: 'photos',
-      options: {
-
-        customBodyRender: (value, tableMeta) => (
-          <div className="flex items-center justify-center w-full">
-            <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
-                border-[2px]  rounded-full  ${tableMeta.rowData[5] === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                : "border-orange-500 text-white bg-orange-300"}`}>
-              {value}
-            </div>
-          </div>
         ),
         filter: false
       }
     },
     {
-      name: 'nom'
+      name: 'avatar',
+      label: 'Avatar',
+      options: {
+        customBodyRenderLite: (dataIndex) => {
+          const photos = donne_table_trans[dataIndex].avatar
+          const sexe = donne_table_trans[dataIndex].sexe
+          return (
+            <div className="flex items-center justify-center w-full">
+              <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
+                    border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                  : "border-orange-500 text-white bg-orange-300"}`}>
+                {photos}
+              </div>
+            </div>
+          );
+        },
+        filter: false
+      }
+    },
+
+    {
+      name: 'nom',
+      label: "Nom",
+      options: {
+        filter: false
+      },
     },
     {
-      name: 'etablissement',
-      label:"Etabl"
+      name: 'prenom',
+      label: "Prenom",
+      options: {
+        filter: false
+      },
     },
     {
-      name: 'filiere',
-      label:"Filiere"
+      name: 'date_naissance',
+      label: "Naissance",
+      options: {
+        display: "excluded" // Cache la colonne `id` dans la table
+      }
     },
     {
       name: 'sexe',
+      label: 'sexe',
       options: {
         customBodyRender: (value) => (
-          <div className={`flex items-center justify-center px-1 py-0.5 rounded-full text-gray-950 font-extrabold space-x-2
+          <div className={`flex items-center justify-center px-1 py-0.5 rounded-full text-gray-950 font-extrabold space-x-2 dark:bg-[#282828a2]  dark:text-white
             ${value === "masculin" ? "bg-gray-300" : "bg-gray-200"}
           `}>
             <FaDotCircle className={` ${value === "masculin" ? "text-bleue_union_500" : "text-orange_union"}`} />
@@ -177,7 +92,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
       options: {
         customBodyRender: (value) => (
           <div className="flex items-center justify-center w-full">
-            <div className="flex items-center justify-center w-8 h-8 font-bold bg-gray-100 rounded-full text-orange_union">
+            <div className="flex items-center justify-center w-8 h-8 font-bold bg-gray-100 rounded-full text-orange_union dark:bg-[#282828a2]">
               {value}
             </div>
           </div>
@@ -190,7 +105,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
       options: {
         customBodyRender: (value) => (
           <div className="flex items-center justify-center w-full">
-            <div className="flex items-center justify-center w-8 h-8 font-bold bg-gray-200 rounded-full">
+            <div className="flex items-center justify-center w-8 h-8 font-bold bg-gray-200 rounded-full dark:bg-[#282828a2] dark:text-white">
               {value}
             </div>
           </div>
@@ -200,24 +115,28 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
     {
       name: '',
       options: {
-        customBodyRender: () => (
+        customBodyRenderLite: (dataIndex) => {
+          const id = donne_table_trans[dataIndex].id
+          const prenom = donne_table_trans[dataIndex].prenom
+          const tout_donnes = donne_table_trans[dataIndex];
+          return (
+            <div className="flex items-center justify-center space-x-2">
+              <div
+                onClick={() => show_infoPersonnel(id)}
+                className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
+                <FaInfo />
+              </div>
 
-          <div className="flex items-center justify-center space-x-2">
-            <div onClick={show_infoPersonnel} className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-              <FaInfo />
+              <div onClick={() => show_form_modif(tout_donnes, prenom)} className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
+                <FaPen />
+              </div>
+
+              <div onClick={() => show_div_supression_personnel(id, prenom)} className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
+                <FaTrash />
+              </div>
             </div>
-
-            <div className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
-              <FaPen />
-            </div>
-
-            <div onClick={show_div_supression_personnel} className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="suprimer">
-              <FaTrash />
-            </div>
-          </div>
-
-
-        ),
+          )
+        },
         filter: false
       }
     }
@@ -243,11 +162,20 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
         viewColumns: "Voir les colonnes",
         filterTable: "Filtrer le tableau",
       },
+      filter: {
+        all: "Tous",
+        title: "Filtres",
+        reset: "Réinitialiser",
+      },
+      viewColumns: {
+        title: "Voir les colonnes",
+        titleAria: "Afficher/Masquer les colonnes de la table",
+      },
     },
     selectableRows: false,
     responsive: "standard",
     elevation: 0,
-    rowsPerPage: 6,
+    rowsPerPage: 7,
     rowsPerPageOptions: [7, 10, 20],
 
   };
@@ -258,11 +186,13 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
 
     },
     palette: {
-      //   background: {
-      //   paper: "rgba(0, 0, 0, 0)",
-      //   default: "#0f172a"
-      // },
-      // mode: "dark"
+      mode: localStorage.getItem('theme'),
+      ...(localStorage.getItem('theme') === "dark" && {
+        background: {
+          paper: "rgba(0, 0, 0, 0)"
+        },
+      }),
+
     },
 
     components: {
@@ -271,7 +201,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
           head: {
             padding: "1px",
             background: "#09aac6",
-            borderBottom : "2px solid orange",
+            borderBottom: "2px solid orange",
             color: "white",
             '&:first-of-type': {
               borderRadius: "10px 0 0 0", // Arrondir uniquement le premier header (à gauche)
@@ -315,10 +245,12 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout , show_div_supressio
         </button>
       </div>
       <MUIDataTable
-        data={personnel.liste}
+        data={donne_table_trans}
         columns={columns}
         options={options}
       />
+
+
 
       <style jsx>{`
         .MuiTableHead-root .MuiTableCell-root {

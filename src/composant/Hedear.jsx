@@ -3,10 +3,12 @@ import { FaMoon, FaSearch, FaSun, FaUser, FaUserAlt } from "react-icons/fa";
 import { FaBell, FaServer } from "react-icons/fa6";
 import { RiEqualizerFill } from "react-icons/ri";
 import $ from "jquery"
+import { useLocation, useNavigate } from "react-router-dom";
 const Hedear = () => {
   const [theme, setTheme] = useState("light")
   const [miseho, setMiseho] = useState(false)
-
+  const ary = useNavigate()
+  const location = useLocation()
 
   const click_sun = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -16,7 +18,14 @@ const Hedear = () => {
       $('.anim_button').animate({ left: "-12px" }, 200)
     }
     localStorage.setItem("theme", theme);
+    ary("/logic/change_mode", { state: { from: location.pathname } });
+    
   };
+
+  const allez_recherche = () => {
+    ary('/logic/recherche')
+  }
+  
   const hover_entrer_sun = () => {
     setMiseho(true)
   }
@@ -35,7 +44,7 @@ const Hedear = () => {
   }, [theme]);
   return (
     <div
-      className="flex items-center justify-between p-2 px-4 space-x-4 text-gray-500 bg-white w-full dark:bg-[#42424232] shadow"
+      className="flex items-center justify-between p-2 px-4 space-x-4 text-gray-500 bg-white w-full dark:bg-[#42424232] shadow "
       style={{ borderRadius: "0 0 1em 1em" }}
     >
       <div className="relative flex items-center justify-center px-1 py-1 space-x-4 border rounded-full">
@@ -49,13 +58,14 @@ const Hedear = () => {
 
       </div>
 
-      <div className="font-bold text-[1.3em]">
+      <div className="font-bold hidden text-[0.8em] md:flex">
         <p>Gestion des Pointages</p>
       </div>
 
       <div className="flex items-center justify-center space-x-4">
         <div className="relative hidden md:block">
           <input
+            onFocus={allez_recherche}
             type="text"
             placeholder="recherche..."
             className="border rounded-full text-[13px] px-10 h-8 outline-none dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
@@ -69,12 +79,7 @@ const Hedear = () => {
         <div className="flex items-center justify-center w-6 h-6 pt-0.5 bg-gray-100 rounded-full fon1t-bold text-[13px] dark:bg-gray-700 dark:text-gray-100">
           <font>AD</font>
         </div>
-        <div className="relative">
-          <FaBell className="w-6 h-6 px-1 py-1 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-100" />
-          <div className="absolute w-4 h-4 text-white bg-red_union_500 rounded-full text-[10px] flex items-center justify-center -top-1 left-4">
-            5
-          </div>
-        </div>
+        
         <div className="relative">
           <RiEqualizerFill
             className="block w-6 h-6 px-1 py-1 duration-200 bg-gray-100 rounded-full cursor-pointer dark:bg-gray-700 dark:text-gray-100"
