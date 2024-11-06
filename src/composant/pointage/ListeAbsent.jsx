@@ -126,6 +126,15 @@ const ListeAbsent = ({ show_ajout, listeAbsentTrans, show_modif, show_div_supres
         viewColumns: "Voir les colonnes",
         filterTable: "Filtrer le tableau",
       },
+      filter: {
+        all: "Tous",
+        title: "Filtres",
+        reset: "Réinitialiser",
+      },
+      viewColumns: {
+        title: "Voir les colonnes",
+        titleAria: "Afficher/Masquer les colonnes de la table",
+      },
     },
 
     selectableRows: false,

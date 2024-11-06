@@ -142,7 +142,17 @@ const ListeRetard = ({ show_ajout, listeDesRetards, show_modif, show_div_supress
         viewColumns: "Voir les colonnes",
         filterTable: "Filtrer le tableau",
       },
+      filter: {
+        all: "Tous",
+        title: "Filtres",
+        reset: "Réinitialiser",
+      },
+      viewColumns: {
+        title: "Voir les colonnes",
+        titleAria: "Afficher/Masquer les colonnes de la table",
+      },
     },
+
     selectableRows: false,
     responsive: "standard",
     elevation: 0,
