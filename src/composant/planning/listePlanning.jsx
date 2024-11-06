@@ -103,14 +103,14 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                       </div>
                       <div className='flex flex-col items-end justify-center -space-y-1'>
                         <font>{l.personnel.identifiant}</font>
-                        <p className='text-[11px]'>{l.personnel.nom}</p>
+                        <p className='text-[11px]'>{l.personnel.prenom}</p>
                       </div>
                     </div>
                   </td>
                   <td>
                     {
                       l.lundi_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px]'>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px]'>
                           <font>OFF</font>
                         </div>
                         :
@@ -140,7 +140,7 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                   <td>
                     {
                       l.mardi_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px] '>
                           <font>OFF</font>
                         </div>
                         :
@@ -170,7 +170,7 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                   <td>
                     {
                       l.mercredi_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px] '>
                           <font>OFF</font>
                         </div>
                         :
@@ -200,7 +200,7 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                   <td>
                     {
                       l.jeudi_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px] '>
                           <font>OFF</font>
                         </div>
                         :
@@ -230,7 +230,7 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                   <td>
                     {
                       l.vendredi_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px] '>
                           <font>OFF</font>
                         </div>
                         :
@@ -260,7 +260,7 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                   <td>
                     {
                       l.samedi_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px] '>
                           <font>OFF</font>
                         </div>
                         :
@@ -290,7 +290,7 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
                   <td>
                     {
                       l.dimanche_deb === 'off' ?
-                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 bg-gray-100 rounded py-[14px] '>
+                        <div className='flex dark:bg-[#42424232] dark:text-gray-300 items-center justify-center px-2 text-gray-900 border dark:border-[#42424232] rounded py-[14px] '>
                           <font>OFF</font>
                         </div>
                         :

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { GiFemale, GiMale } from "react-icons/gi";
 import {
   FaAd,
   FaArrowLeft,
@@ -11,7 +12,9 @@ import {
   FaDAndD,
   FaDonate,
   FaDotCircle,
+  FaFemale,
   FaGlobeAfrica,
+  FaMale,
   FaPause,
   FaSave,
   FaSchool,
@@ -523,12 +526,12 @@ const Personnel = () => {
             <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4 dark:bg-[#42424232] dark:text-gray-300">
               <div className="text-[13px] flex items-center justify-between">
                 <font className="text-gray-900 dark:text-gray-300">
-                  Comparaison
+                Taux masculinité
                 </font>
-                <FaChartLine className="text-orange_union" />
+                <GiMale className="text-orange_union" />
               </div>
               <p className="text-[11px] text-gray-400 mt-4">
-                Ceci montre les totalités des Personneles suivant leur sexe
+              Ce rapport montre la totalité des données. Voici le taux de masculinité
               </p>
               {/* ilay personnel boribory  */}
               <div className="mt-2 mb-7">
@@ -543,7 +546,23 @@ const Personnel = () => {
                   }
 
                   <div className="flex items-center justify-center w-8 h-8  text-gray-500 bg-gray-50 border-[2px] dark:bg-[#1d1d1d] dark:border-[#131313] dark:text-white  rounded-full border-gray-300 text-[12px]">
-                    +{masculin_total ? masculin_total - 6 : 0}
+                    +{masculin_total ?
+                      <>
+                         {
+                            masculin_total >= 7 ?
+                            <> 
+                             {masculin_total - 6}
+                            </>
+                            :
+                            <>0</>
+                         }
+                      
+                      </>
+                      :
+                      
+                      <>0</>
+                      
+                     }
                   </div>
                 </div>
                 <div className="my-4">
@@ -558,7 +577,7 @@ const Personnel = () => {
                   </div>
                   <div className="w-full bg-gray-300 my-1 dark:bg-[#292929]">
                     <div
-                      className={`w-[70%] h-1 rounded-full bg-orange_union`}
+                      className={`h-1 rounded-full bg-orange_union`}
                       style={{ width: pourcentage_masculin + "%" }}
                     />
                   </div>
@@ -581,12 +600,12 @@ const Personnel = () => {
             <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4 dark:bg-[#42424232] dark:text-gray-300">
               <div className="text-[13px] flex items-center justify-between">
                 <font className="text-gray-900 dark:text-gray-300">
-                  Comparaison
+                Taux féminité
                 </font>
-                <FaChartLine className="text-orange_union" />
+                <GiFemale className="text-bleue_union_500" />
               </div>
               <p className="text-[11px] text-gray-400 mt-4">
-                Ceci montre les totalités des Personneles suivant leur sexe
+              Ce rapport montre la totalité des données. Voici le taux de féminité.
               </p>
               {/* ilay personnel boribory  */}
               <div className="mt-2 mb-7">
@@ -602,7 +621,23 @@ const Personnel = () => {
                   }
 
                   <div className="flex items-center justify-center w-8 h-8  dark:bg-[#1d1d1d] dark:border-[#131313] dark:text-white text-gray-500 bg-gray-50 border-[2px]  rounded-full border-gray-300 text-[12px]">
-                    +{feminin_total ? feminin_total - 4 : 0}
+                  +{feminin_total ?
+                      <>
+                         {
+                            feminin_total >= 5 ?
+                            <> 
+                             {feminin_total - 4}
+                            </>
+                            :
+                            <>0</>
+                         }
+                      
+                      </>
+                      :
+                      
+                      <>0</>
+                      
+                     }
                   </div>
                 </div>
                 <div className="my-4">

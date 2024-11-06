@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import MyAreaChart from "../composant/line";
 import MyBarChart from "../composant/barchart";
 import {
@@ -20,6 +22,8 @@ import { IoMdAlarm } from "react-icons/io";
 import { MdWorkHistory } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
+import { FiRefreshCcw } from "react-icons/fi";
+import { GiFemale, GiMale } from "react-icons/gi";
 
 const Dashboard = () => {
 
@@ -33,6 +37,41 @@ const Dashboard = () => {
   const [feminin_total, setFeminin_total] = useState('');
   const [pourcentage_masculin, setPourcentage_masculin] = useState('');
   const [pourcentage_feminin, setPourcentage_feminin] = useState('');
+
+
+  const [total_absent, setTotal_absent] = useState('');
+  const [total_retard, setTotal_retard] = useState('');
+
+  const [total_absent_feminin, setTotal_absent_feminin] = useState('');
+  const [total_absent_masculin, setTotal_absent_masculin] = useState('');
+
+  const [total_retard_feminin, setTotal_retard_feminin] = useState('');
+  const [total_retard_masculin, setTotal_retard_masculin] = useState('');
+
+  const currentDate = new Date();
+  const options = { month: 'long', year: 'numeric' };
+  const mois_actuelle = currentDate.toLocaleDateString('fr-FR', options);
+
+  //select les totals du retard et absent du mois suivant leur sexe
+  const select_total_pointage_suivant_les_sexes = () => {
+
+    axios
+      .get("http://localhost:8000/api/petit_statistique")
+      .then(response => {
+        setTotal_retard(response.data.total_retards);
+        setTotal_absent(response.data.total_absents);
+
+        setTotal_absent_feminin(response.data.totalAbsentFeminin)
+        setTotal_absent_masculin(response.data.totalAbsentMasculin)
+
+        setTotal_retard_masculin(response.data.totalRetardsMasculin)
+        setTotal_retard_feminin(response.data.totalRetardsFeminin)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
   //select des activité recent
   const select_activite = () => {
@@ -64,8 +103,8 @@ const Dashboard = () => {
       });
   };
 
-   // Requête pour statistiques personnels 
-   const select_statistique_personnels = () => {
+  // Requête pour statistiques personnels 
+  const select_statistique_personnels = () => {
 
     axios
       .get("http://localhost:8000/api/statistique_personnel")
@@ -76,7 +115,6 @@ const Dashboard = () => {
         setPourcentage_feminin(parseInt(response.data.pourcentage_feminin))
         console.log(parseInt(response.data.pourcentage_feminin));
         console.log(parseInt(response.data.pourcentage_masculin));
-        
 
       })
       .catch(error => {
@@ -88,6 +126,7 @@ const Dashboard = () => {
     select_activite()
     select_sanction()
     select_statistique_personnels()
+    select_total_pointage_suivant_les_sexes()
   }, [])
 
   return (
@@ -104,41 +143,31 @@ const Dashboard = () => {
             <div className="flex justify-between px-6 py-3 sm:px-4 text-start sm:justify-between sm:flex-col sm:flex sm:col-span-3  rounded rounded-tl-[1em]">
               <div>
                 <p className="font-bold sm:text-[12px] text-[1.5em]">
-                  Statistique
+                  Statistiques
                 </p>
                 <p className="text-[11px] text-gray-400">
-                  Ceci motre le stati du mois{" "}
+                  Ceci montre le total des pointages pour le mois de
+                  <font> {mois_actuelle}</font>
                 </p>
               </div>
 
               <div>
-                <p className="font-bold sm:text-[19px] text-[1.5em]">12</p>
-                <p className="text-[11px] text-gray-400">Total Retard </p>
+                <p className="font-bold sm:text-[19px] text-[1.5em]">{total_retard}</p>
+                <p className="text-[11px] text-gray-400">Retards Totals </p>
               </div>
 
               <div>
-                <p className="font-bold sm:text-[19px] text-[1.5em]">10</p>
-                <p className="text-[11px] text-gray-400">Total Absence </p>
+                <p className="font-bold sm:text-[19px] text-[1.5em]">{total_absent}</p>
+                <p className="text-[11px] text-gray-400"> Absences Totals</p>
               </div>
 
-              <div>
-                <button className="flex items-center justify-center space-x-3 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded">
-                  <ImSpinner11 />
-                  <span className="hidden md:flex sm:hidden">Actualiser</span>
-                </button>
-              </div>
             </div>
             <div className="py-1 h-60 sm:col-span-9 ">
               {" "}
               {/* hisy  bar Line  */}
               <div className="flex items-center justify-between px-2">
                 <div className="flex items-center justify-center space-x-4 text-[10px] font-extrabold">
-                  <span>PRIMARY</span>
-                  <span className="border-b-2 border-b-orange_union">
-                    SECONDARY
-                  </span>
-                  <span>TERTIARY</span>
-                  <span>QUADRY</span>
+                  <p>Mois : </p> <font className='text-[15px]'> {mois_actuelle}</font>
                 </div>
 
                 <div className="flex items-center justify-center space-x-4 text-[11px] ">
@@ -148,7 +177,7 @@ const Dashboard = () => {
                   </span>
 
                   <span className="flex items-center justify-center space-x-2">
-                    <FaDotCircle className="text-red_union_500" />
+                    <FaDotCircle className="text-jaune_union_500" />
                     <p className="hidden lg:flex">Retard</p>
                   </span>
                 </div>
@@ -162,38 +191,38 @@ const Dashboard = () => {
             {/* ilay 4 milahatra kely  */}
             <div className="flex items-center justify-center space-x-3 h-14">
               <div className="flex items-center justify-center p-1 text-white rounded-full bg-orange_union">
-                <FaSnapchat />
+                <GiFemale />
               </div>
               <div className="font-medium">
-                <p className="text-[11px] text-gray-400">Moins Janv</p>
-                <p className="text-[13px] font-bold ">$30144</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center space-x-3 h-14">
-              <div className="flex items-center justify-center p-1 text-bleue_union_500 roubleue_union_500nded-full bg-">
-                <FaGoogleDrive />
-              </div>
-              <div className="font-medium">
-                <p className="text-[11px] text-gray-400">Moins Fev</p>
-                <p className="text-[13px] font-bold ">$45200</p>
+                <p className="text-[11px] text-gray-400">Absence féminine</p>
+                <p className="text-[13px] font-bold ">{total_absent_feminin}</p>
               </div>
             </div>
             <div className="flex items-center justify-center space-x-3 h-14">
               <div className="flex items-center justify-center p-1 text-white rounded-full bg-orange_union">
-                <FaAmazon />
+                <GiFemale />
               </div>
               <div className="font-medium">
-                <p className="text-[11px] text-gray-400">Moins Mars</p>
-                <p className="text-[13px] font-bold ">$895200</p>
+                <p className="text-[11px] text-gray-400">Retard féminine</p>
+                <p className="text-[13px] font-bold ">{total_retard_feminin}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center space-x-3 h-14">
+              <div className="flex items-center justify-center p-1 text-white rounded-full bg-bleue_union_500">
+                <GiMale />
+              </div>
+              <div className="font-medium">
+                <p className="text-[11px] text-gray-400">Absence masculine</p>
+                <p className="text-[13px] font-bold ">{total_absent_masculin}</p>
               </div>
             </div>
             <div className="flex items-center justify-center space-x-3 h-14">
               <div className="flex items-center justify-center p-1 text-white bg-gray-600 rounded-full">
-                <FaTwitter />
+                <GiMale />
               </div>
               <div className="font-medium">
-                <p className="text-[11px] text-gray-400">Moins Avril</p>
-                <p className="text-[13px] font-bold ">$32600</p>
+                <p className="text-[11px] text-gray-400">Retard masculine</p>
+                <p className="text-[13px] font-bold ">{total_retard_masculin}</p>
               </div>
             </div>
           </div>
@@ -207,22 +236,22 @@ const Dashboard = () => {
             </p>
 
             <p className="text-[12px] text-gray-400">
-              Le poucentage des peronneles suivant leur sexe.
-              Combinant avec leur total chaqun
+              Le pourcentage des personnels selon leur sexe,
+              combiné avec leur total respectif.
             </p>
 
             <div className="border-l">
               <div className="w-full bg-gray-50 dark:bg-[#292929] h-8 my-4 dark:bg-transparent rounded-tr-[10px] rounded-br-[10px]">
-                <div className="h-[100%] bg-bleue_union_500 border-l-[3px] border-l-blue-500 flex items-center justify-start px-2 text-white space-x-4 text-[11px] rounded-tr-[10px] rounded-br-[10px]" style={{ width: pourcentage_masculin+"%" }}>
+                <div className="h-[100%] bg-bleue_union_500 border-l-[3px] border-l-blue-500 flex items-center justify-start px-2 text-white space-x-4 text-[11px] rounded-tr-[10px] rounded-br-[10px]" style={{ width: pourcentage_masculin + "%" }}>
                   <font>Masculin</font>
                   <p className="font-bold text-[15px]">{masculin_total}</p>
                 </div>
               </div>
 
               <div className="w-full bg-gray-50 dark:bg-[#292929] h-8 my-4 rounded-tr-[10px] rounded-br-[10px] dark:bg-transparent">
-                <div className="h-[100%] bg-orange_union border-l-[3px] border-l-orange-500  flex items-center justify-start px-2 text-white space-x-4 text-[11px] rounded-tr-[10px] rounded-br-[10px]" style={{ width: pourcentage_feminin+"%" }}>
+                <div className="h-[100%] bg-orange_union border-l-[3px] border-l-orange-500  flex items-center justify-start px-2 text-white space-x-4 text-[11px] rounded-tr-[10px] rounded-br-[10px]" style={{ width: pourcentage_feminin + "%" }}>
                   <font>Feminin</font>
-                   <p className="font-bold text-[15px]">{feminin_total}</p>
+                  <p className="font-bold text-[15px]">{feminin_total}</p>
                 </div>
               </div>
 
@@ -259,7 +288,7 @@ const Dashboard = () => {
               <span className="font-bold">{masculin_total + feminin_total}</span>
               <span className="flex items-center justify-center space-x-2 text-[11px]">
                 <FaDotCircle className="text-gray-600" />
-                <p className="">Total Personnel</p>
+                <p className="">Total Personnels</p>
               </span>
             </div>
           </div>
@@ -268,13 +297,13 @@ const Dashboard = () => {
 
       {/* 2eme line  */}
 
- 
+
 
       {/* 3eme line  */}
 
       <div className="grid gap-3 mt-3 text-gray-900 sm:grid-cols-12 dark:text-gray-100">
         <div className="h-auto rounded-[1em] bg-white sm:col-span-5 p-3 dark:bg-[#42424232] shadow ">
-          <p className="font-bold text-[13px] mb-2">Activité recent</p>
+          <p className="font-bold text-[13px] mb-2">Dernières activités</p>
           <hr className="mb-1" />
 
           {/* activité recent  */}
@@ -282,30 +311,40 @@ const Dashboard = () => {
             <div className="flex flex-row items-center justify-between px-2 border-b cursor-pointer hover:bg-gray-100 dark:hover:bg-[black] sm:items-start sm:flex-col sm:space-y-2 md:flex-row md:items-center md:justify-between dark:border-b-[#1f1e1e]">
               <div
                 className={`flex items-center justify-center w-8 h-8 px-2 text-white rounded-full 
-            
+            // FiRefreshCcw 
                ${a.status === "Personnel"
                     ? "bg-gray-600"
                     : a.status === "Planning"
                       ? "bg-bleue_union_500"
                       : a.status === "Retard"
                         ? "bg-jaune_union_500"
-                        : "bg-orange_union"
+                        : a.status === "Reinitialisation"
+                          ? "bg-purple-600"
+                          : "bg-orange_union"
                   } `}
               >
                 {/* test pour les icon  */}
 
-                {a.status === "Personnel" ? (
-                  <FaUserTie />
-                ) : a.status === "Planning" ? (
-                  <AiOutlineSchedule />
-                ) : a.status === "Retard" ? (
-                  <IoMdAlarm />
-                ) : (
-                  <MdWorkHistory />
-                )}
+                {
+                  a.status === "Personnel" ? (
+                    <FaUserTie />
+                  ) : a.status === "Planning" ? (
+                    <AiOutlineSchedule />
+                  ) : a.status === "Retard" ? (
+                    <IoMdAlarm />
+                  ) : a.status === "Retard" ?
+                    (<FiRefreshCcw />)
+                    : (
+                      <MdWorkHistory />
+                    )
+                }
               </div>
               <div className="text-[11px]">
-                <p>{a.created_at}</p>
+                <p>
+
+                  {format(new Date(a.created_at), 'd MMM yyyy', { locale: fr })
+                  }
+                </p>
               </div>
               <div className="text-[12px]" style={{ lineHeight: "27px" }}>
                 <div className="text-center sm:text-start">
@@ -324,7 +363,7 @@ const Dashboard = () => {
         </div>
 
         <div className="h-auto shadow rounded-[1em] bg-white sm:col-span-7 px-4 py-2 dark:bg-[#42424232]">
-          <p className="font-bold text-[14px]">Table de Sanction</p>
+          <p className="font-bold text-[14px] dark:text-gray-300">Liste des personnels pouvant être sanctionnés</p>
 
           <div className="">
             <div className="flex items-center justify-between py-4">
@@ -333,9 +372,7 @@ const Dashboard = () => {
                   <ImSpinner11 />
                   <p>Desordre</p>
                 </button>
-                <div className="flex items-center justify-center w-8 text-white bg-gray-500 rounded h-7">
-                  <FaPrint />
-                </div>
+               
 
               </div>
 

@@ -6,6 +6,8 @@ import { dark } from "@mui/material/styles/createPalette";
 import { GrAdd } from "react-icons/gr";
 import { FaArrowDown, FaArrowUp, FaDotCircle, FaFilter, FaInfo, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import { ImSpinner11 } from "react-icons/im";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 
 const ListeRetard = ({ show_ajout, listeDesRetards, show_modif, show_div_supression }) => {
@@ -62,7 +64,15 @@ const ListeRetard = ({ show_ajout, listeDesRetards, show_modif, show_div_supress
     },
     {
       name: 'date_retard',
-      label: "Date Retard"
+      label: "Date Retard",
+      options: {
+        customBodyRender: (value) => (
+          <font>{
+            format(new Date(value), 'd MMM yyyy', { locale: fr })
+            }</font>
+        ),
+        
+      }
     },
     {
       name: 'jour',

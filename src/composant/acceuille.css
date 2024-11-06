@@ -1,6 +1,7 @@
 .entrourage{
-    background-image: url(../../public/image_union/fond.png);
+    background-image: url(../../public/image_union/font.png);
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
    
 }

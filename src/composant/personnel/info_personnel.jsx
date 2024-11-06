@@ -4,6 +4,8 @@ import { FaCamera, FaCheckCircle, FaClock, FaGlobeAfrica, FaPause, FaSchool, FaS
 import { FaAngleLeft, FaCameraRetro, FaGlobe, FaMoon, FaPagelines, FaSchoolCircleCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 const Info_personnel = ({ }) => {
 
@@ -51,7 +53,7 @@ const Info_personnel = ({ }) => {
   };
 
   useEffect(() => {
-    select_absent_planning_retard_personnel()
+     select_absent_planning_retard_personnel() 
     console.log(id);
 
   }, [])
@@ -571,7 +573,11 @@ const Info_personnel = ({ }) => {
                               </div>
                             </td>
                             <td>{p.jour}</td>
-                            <td>{p.date_retard}</td>
+                            <td>{
+                               format(new Date(p.date_retard), 'd MMM yyyy', { locale: fr })
+
+                          
+                            }</td>
                             <td>{p.nb_heure_retard}</td>
                           </tr>
                         ))
@@ -618,7 +624,10 @@ const Info_personnel = ({ }) => {
                               </div>
                             </td>
                             <td>{p.personnel.identifiant}</td>
-                            <td>{p.date_absent}</td>
+                            <td>{
+                               format(new Date(p.date_absent), 'd MMM yyyy', { locale: fr })
+                            
+                            }</td>
                           </tr>
                         ))
                       }

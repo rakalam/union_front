@@ -36,8 +36,8 @@ const Clock = ({page}) => {
           <div>
               <font>Pointage {page}</font>
               <p className='text-gray-400 text-[0.8rem]'>
-                 Bien regler l'heure avant de pointer un(e) {page} {" "}
-                 pour evité les conflis
+              
+                 Régler l'heure avant de pointer un(e) {page}(e) {" "} pour éviter les conflits
               </p>
           </div>
         </div>

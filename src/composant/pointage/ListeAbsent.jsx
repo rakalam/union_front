@@ -4,10 +4,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { dark } from "@mui/material/styles/createPalette";
 import { GrAdd } from "react-icons/gr";
 import { FaPen, FaTrash } from "react-icons/fa";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 
 
 const ListeAbsent = ({ show_ajout, listeAbsentTrans, show_modif, show_div_supression }) => {
+  
 
   const columns = [
     {
@@ -56,8 +59,17 @@ const ListeAbsent = ({ show_ajout, listeAbsentTrans, show_modif, show_div_supres
       },
     },
     {
+      // format(new Date(dateString), 'd MMM yyyy', { locale: fr })
       name: 'date_absent',
-      label: "Date Absent"
+      label: "Date Absent",
+      options: {
+        customBodyRender: (value) => (
+          <font>{
+            format(new Date(value), 'd MMM yyyy', { locale: fr })
+            }</font>
+        ),
+        
+      }
     },
     {
       name: 'jour',

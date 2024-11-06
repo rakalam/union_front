@@ -1,7 +1,10 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { FaArrowLeft, FaSearch } from 'react-icons/fa'
+import { FiRefreshCcw } from 'react-icons/fi'
 import { ClipLoader } from 'react-spinners'
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 const Recherche = () => {
     const [state_recherche, setState_recherche] = useState(true)
@@ -53,6 +56,10 @@ const Recherche = () => {
             <div className={`text-gray-900 h-[100%] p-3 dark:text-gray-300 ${state_recherche ? '' : 'hidden'}`}>
                 <div className="w-full rounded-[1rem] h-[91%] shadow bg-white dark:bg-[#131313] relative">
 
+                    {/* <img src="../image_union/Outer space-rafiki.svg" alt="" 
+                    className="w-[10rem]"
+                     srcset="" /> */}
+
                     <div className={` flex-col space-y-8 items-center justify-center p-4 flex `}
                         style={{
                             position: 'absolute',
@@ -62,10 +69,10 @@ const Recherche = () => {
                         }}
                     >
                         <div className='text-center'>
-                            <font className="text-[1.8em]"> Calculer et Visualiser Quelconque</font>
-                            <p className='text-gray-400'>On peux calculer et visualiser les retard et les absences <br />
-                                a partir des deux date quelconque . Il suffit de remplir les <br />
-                                deux champs date !
+                            <font className="text-[1.8em]"> Analyse des Retards et Absences</font>
+                            <p className='text-gray-400'>On peut calculer et visualiser les retards et les absences <br />
+                                à partir de deux dates quelconques. Il suffit de remplir les <br />
+                                deux champs de date !
                             </p>
                         </div>
                         <div className=' w-[20rem] sm:w-[25rem] rounded-[10px] shadow px-4 py-4'>
@@ -107,15 +114,15 @@ const Recherche = () => {
 
                             <div className='flex flex-col items-center justify-start px-4 py-6 space-x-4 md:flex-row'>
                                 <font className="text-[16px]">Resultat de la Recherche</font>
-                                <font>| Date du Début : {deb}</font>
-                                <font>| Date Fin : {fin}</font>
+                                <font>| Date du Début : {deb ? format(new Date(deb), 'd MMM yyyy', { locale: fr }) : ''}</font>
+                                <font>| Date Fin : {fin ? format(new Date(fin), 'd MMM yyyy', { locale: fr }) : ''}</font>
                             </div>
 
                             <button
                                 onClick={retour_recherche}
                                 className="flex items-center justify-center space-x-3 my-1 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded mb-4">
                                 <FaSearch />
-                                <span className="text-[13px]">Faire une autre recherche</span>
+                                <span className="text-[13px]">Effectuez une autre recherche</span>
                             </button>
 
                         </div>
@@ -125,10 +132,10 @@ const Recherche = () => {
                         >
 
                             <div className={`shadow md:h-[30rem] rounded-[10px] bg-white dark:bg-[#42424232] px-2 py-2
-                             ${retard.length > 8 ? 'overflow-y-scroll': ''}`}>
+                             ${retard.length > 8 ? 'overflow-y-scroll' : ''}`}>
                                 <div className='flex items-center justify-between my-3'>
                                     <font className="text-[12px]">Pointage Retard</font>
-                                  
+
                                 </div>
 
 
@@ -137,13 +144,17 @@ const Recherche = () => {
                                         <div className='grid w-full my-8 place-content-center'>
                                             <p
                                                 className='flex items-center justify-center space-x-3'>
-                                                <FaSearch />  <p>Auccun donne trouve</p>
+                                                <FaSearch />  <p>Aucune donnée trouvée.</p>
                                             </p>
+
+                                            <img src="../image_union/Outer space-rafiki.svg" alt=""
+                                                className="w-[20rem]"
+                                                srcset="" />
                                         </div>
 
                                         :
-                                        <> 
-                            
+                                        <>
+
                                             <table className="text-center w-[100%] my-4">
                                                 <thead className="px-2 py-4 h-8 rounded-full text-white dark:bg-[#141414] bg-gray-500 text-[12px]">
                                                     <th style={{ borderRadius: '4px 0 0 4px' }}>avatar</th>
@@ -198,10 +209,10 @@ const Recherche = () => {
 
 
                             <div className={`shadow md:h-[30rem] rounded-[10px] bg-white dark:bg-[#42424232] px-2 py-2
-                                ${absent.length > 8 ? 'overflow-y-scroll': ''} `}>
+                                ${absent.length > 8 ? 'overflow-y-scroll' : ''} `}>
                                 <div className='flex items-center justify-between my-3'>
                                     <font className="text-[12px]">Pointage Absent</font>
-                              
+
                                 </div>
 
                                 {
@@ -209,8 +220,12 @@ const Recherche = () => {
                                         <div className='grid w-full my-8 place-content-center'>
                                             <p
                                                 className='flex items-center justify-center space-x-3'>
-                                                <FaSearch />  <p>Auccun donne trouve</p>
+                                                <FaSearch />  <p>Aucune donnée trouvée.</p>
                                             </p>
+
+                                            <img src="../image_union/Outer space-rafiki.svg" alt=""
+                                                className="w-[20rem]"
+                                                srcset="" />
                                         </div>
 
                                         :

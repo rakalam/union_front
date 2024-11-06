@@ -248,14 +248,15 @@ const Retard = () => {
                ${miseho_image ? "block" : "hidden"}
                `}>
                 <div className="bg-white rounded-lg  dark:bg-[#42424232] dark:text-gray-300 ">
-                   <Clock page={"Retard"} />
+                   <Clock page={"retard"} />
                 </div> 
                 <hr />
                 <div className="w-full p-2 my-1 rounde-lg ">
-                    <font className="text-[11px] text-gray-900 dark:text-gray-200">Petit information </font>
+                    <font className="text-[11px] text-gray-900 dark:text-gray-200">Petite information </font>
                     <p className="text-gray-400 text-[11px]">
-                      On cliquant sur le boutton bleu pour pointer un retard.
-                      Et utiliser les icons de la table pour autre action
+                    Cliquer sur le bouton bleu pour pointer un retard, 
+                    et utiliser les icônes de la table pour
+                     les autres actions
                       </p>
                 </div>
 

@@ -124,7 +124,7 @@ const Planning = () => {
 
   // Filtrer les données en fonction de la recherche
   const filteredData = planningCourant.filter((item) =>
-    item.personnel.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.personnel.prenom.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.personnel.identifiant.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -220,22 +220,24 @@ const Planning = () => {
             <FaSearch className="absolute  top-[8.5px] left-3 text-gray-500" />
           </div>
 
-        
+
         </div>
       </div>
 
       {/* table  */}
-      <div className='w-full overflow-x-auto'>
-        <ListePlanning
-          listePlanning={filteredData}
-          planningPerPage={planningPerPage}
-          totalPlanning={listePlanning.length}
-          paginate={paginate}
-          pageCourrant={pageCourrant}
-          show_form_modifier={show_form_modifier}
-          show_div_supression_planning={show_div_supression_planning}
-          loading={loading}
-        />
+      <div className='overflow-x-auto w-[76vw] sm:w-[80vw] md:w-full '>
+        
+          <ListePlanning
+            listePlanning={filteredData}
+            planningPerPage={planningPerPage}
+            totalPlanning={listePlanning.length}
+            paginate={paginate}
+            pageCourrant={pageCourrant}
+            show_form_modifier={show_form_modifier}
+            show_div_supression_planning={show_div_supression_planning}
+            loading={loading}
+          />
+       
       </div>
 
     </div>
