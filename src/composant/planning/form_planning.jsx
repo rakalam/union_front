@@ -235,7 +235,7 @@ const Form_planning = ({ liste_personnel, select_personnel, select_planning, hid
                     setType_vendredi('off')
                     setType_samedi('off')
                     setType_dimanche('off')
-                 
+
 
                     hide_blur()
                     enqueueSnackbar(response.data.message, { variant: "success" });
@@ -280,7 +280,14 @@ const Form_planning = ({ liste_personnel, select_personnel, select_planning, hid
                             <option value="" disabled selected>seletionner presonnel</option>
                             {
                                 liste_personnel.map((l, index) => (
-                                    <option key={index} value={l.id}><font>[{l.identifiant}] {"  : "} </font> {l.nom} {" "} {l.prenom}  </option>
+                                    <option key={index} value={l.id}>
+                                     
+                                        <font>
+                                            [{l.identifiant}] {"  : "}
+                                        </font>
+                                        {l.nom} {" "} {l.prenom}
+
+                                    </option>
                                 ))
                             }
                         </select>

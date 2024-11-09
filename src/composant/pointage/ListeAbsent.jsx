@@ -38,14 +38,20 @@ const ListeAbsent = ({ show_ajout, listeAbsentTrans, show_modif, show_div_supres
         customBodyRenderLite: (dataIndex) => {
           const photos = listeAbsentTrans[dataIndex].avatar
           const sexe = listeAbsentTrans[dataIndex].sexe
+          const photos_vrai = listeAbsentTrans[dataIndex].photos
           return (
-            <div className="flex items-center justify-center w-full">
-              <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
-                    border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                  : "border-orange-500 text-white bg-orange-300"}`}>
-                {photos}
+            photos_vrai ?
+              <div className="flex items-center justify-center w-full">
+                <img src={`http://127.0.0.1:8000/storage/${photos_vrai}`} className="w-8 h-8 rounded-full border-[2px]" />
               </div>
-            </div>
+              :
+              <div className="flex items-center justify-center w-full">
+                <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
+                border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                    : "border-orange-500 text-white bg-orange-300"}`}>
+                  {photos}
+                </div>
+              </div>
           );
         },
         filter: false
@@ -141,7 +147,7 @@ const ListeAbsent = ({ show_ajout, listeAbsentTrans, show_modif, show_div_supres
     responsive: "standard",
     elevation: 0,
     rowsPerPage: 7,
-    rowsPerPageOptions: [7, 10, 16],
+    rowsPerPageOptions: [7, 14, 21, 28, 35],
 
   };
 

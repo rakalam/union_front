@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { GiFemale, GiMale } from "react-icons/gi";
 import {
@@ -20,7 +20,8 @@ import {
   FaSchool,
   FaStop,
   FaSun,
-  FaUpload
+  FaUpload,
+  FaUser
 } from "react-icons/fa";
 import {
   FaAngleLeft,
@@ -43,6 +44,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { RegEx_personnel } from "../composant/personnel/RegEx_personnel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { IoMdCamera } from "react-icons/io";
 
 const Personnel = () => {
 
@@ -66,10 +68,37 @@ const Personnel = () => {
   const [blur, setBlur] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  //pour les photos
+  const inputRef = useRef(null);
+  const modifinputRef = useRef(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoPreviewModif, setPhotoPreviewModif] = useState(null);
+  const handleImageChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    setFieldValue("photos", file || null);
+    setPhotoPreview(file ? URL.createObjectURL(file) : null);
+  };
+
+  const handleImageChangeModif = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    setFieldValue("photos", file || null);
+    setPhotoPreviewModif(file ? URL.createObjectURL(file) : null);
+  };
+
+
+  const handleFormReset = (resetForm, setFieldValue) => {
+    resetForm();
+    setPhotoPreview(null);
+    setFieldValue("photos", null);
+    if (inputRef.current) inputRef.current.value = ""; // Réinitialise l'input file
+  };
 
   //pour aller au information de chaque personnel
   const show_infoPersonnel = (id) => {
-     ary(`/logic/info_personnel/${id}`)
+
+    ary('/logic/info_personnel', { state: id })
+
+
   };
 
   // pour disparaitre le fond floux
@@ -99,6 +128,11 @@ const Personnel = () => {
     setDonne_lines(tout_donnes)
     setPseudo(prenom_affiche)
     show_blur();
+    if (tout_donnes && tout_donnes.photos) {
+      setPhotoPreviewModif(`http://127.0.0.1:8000/storage/${tout_donnes.photos}`);
+    } else {
+      setPhotoPreviewModif(null); // Si pas d'image, réinitialise l'aperçu
+    }
     $(".form_modification_personnel").animate({ top: "50%" }, 500);
   };
 
@@ -170,6 +204,10 @@ const Personnel = () => {
       prenom: item.prenom,
       date_naissance: item.date_naissance,
       sexe: item.sexe,
+      adresse: item.adresse,
+      contact: item.contact,
+      cin: item.cin,
+      photos: item.photos,
       nb_retard: item.nb_retard,
       nb_absent: item.nb_absent
 
@@ -178,9 +216,23 @@ const Personnel = () => {
 
   // Charger les données au montage du composant
   useEffect(() => {
-    select_personnel();
-    select_statistique_personnels()
+    // Fonction pour exécuter toutes les requêtes en parallèle
+    const fetchData = async () => {
+      try {
+        // Attendre que toutes les requêtes soient complétées en parallèle
+        await Promise.all([
+          select_personnel(),
+          select_statistique_personnels()
+        ]);
+      } catch (error) {
+        console.error("Une erreur s'est produite lors du chargement des données :", error);
+      }
+    };
+    // Appel de la fonction fetchData au chargement du composant
+    fetchData();
   }, []);
+
+
   // Transformer `donne` dès qu’il est mis à jour
   useEffect(
     () => {
@@ -204,7 +256,7 @@ const Personnel = () => {
 
       {/* formulaire d'ajout employer  */}
       <div
-        className=" w-[70vw] md:w-[50vw] lg:w-[30vw] h-auto bg-white rounded-[1em] fixed z-50 px-4 py-4 dark:bg-[#121212] dark:text-gray-100 form_ajout_personnel"
+        className=" w-[90vw] md:w-[50vw] lg:w-[30vw] h-auto bg-white rounded-[1em] fixed z-50 px-4 py-4 dark:bg-[#121212] dark:text-gray-100 form_ajout_personnel"
         style={{
           top: "-50%",
           left: "50%",
@@ -223,17 +275,34 @@ const Personnel = () => {
             nom: "",
             prenom: "",
             date_naissance: "",
-            sexe: ""
+            sexe: "",
+            adresse: "",
+            contact: "",
+            cin: "",
+            photos: null,
           }}
           validationSchema={RegEx_personnel}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={(values, { resetForm, setFieldValue }) => {
+
+            handleFormReset(resetForm, setFieldValue);
             const formData = new FormData();
             formData.append("nom", values.nom);
             formData.append("prenom", values.prenom);
             formData.append("date_naissance", values.date_naissance);
             formData.append("sexe", values.sexe);
+            formData.append("adresse", values.adresse); // Ajouter les champs supplémentaires
+            formData.append("contact", values.contact);
+            formData.append("cin", values.cin);
+            // Ajouter la photo au FormData si elle est fournie
+            if (values.photos) {
+              formData.append("photos", values.photos);
+            }
             axios
-              .post("http://localhost:8000/api/ajout_personnel", formData)
+              .post("http://localhost:8000/api/ajout_personnel", formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
               .then(response => {
                 resetForm()
                 hide_blur();
@@ -242,6 +311,7 @@ const Personnel = () => {
                 setDonne_table_trans(transforme_donner(donne_table));
                 select_statistique_personnels()//polling
 
+
               })
               .catch(er => {
                 console.log(er);
@@ -249,81 +319,174 @@ const Personnel = () => {
                   variant: "error"
                 });
               });
+
           }}
         >
-          {({ errors, touched }) =>
+          {({ errors, touched, setFieldValue }) =>
             <Form className="p-4 space-y-4">
-              {/* Champ Nom */}
-              <div>
-                <Field
-                  name="nom"
-                  type="text"
-                  placeholder="Nom"
-                  className={`tailwind-form ${errors.nom && touched.nom
-                    ? "border-red-500"
-                    : ""} `}
-                />
-                <ErrorMessage
-                  name="nom"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
-              </div>
 
-              {/* Champ Prénom */}
-              <div>
-                <Field
-                  name="prenom"
-                  type="text"
-                  placeholder="Prenom"
-                  className={`tailwind-form ${errors.prenom && touched.prenom
-                    ? "border-red-500"
-                    : ""} `}
-                />
-                <ErrorMessage
-                  name="prenom"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
-              </div>
-
-              {/* Champ date de naissance */}
-              <div>
-                <Field
-                  name="date_naissance"
-                  type="date"
-                  className={`tailwind-form ${errors.date_naissance &&
-                    touched.date_naissance
-                    ? "border-red-500"
-                    : ""} `}
-                />
-                <ErrorMessage
-                  name="date_naissance"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
-              </div>
-
-              {/* Champ Sexe (Select) */}
-              <div>
-                <Field
-                  name="sexe"
-                  as="select"
-                  className={`tailwind-form ${errors.sexe && touched.sexe
-                    ? "border-red-500"
-                    : ""} `}
+              {/* Photo avec avatar */}
+              <div className="grid w-full py-2 rounded-lg place-content-center bg-bleue_union_500 dark:bg-[#202020ab]">
+                <div
+                  onClick={() => inputRef.current.click()}
+                  className='flex relative flex-col items-center justify-center w-32 h-32 text-white border-[4px] rounded-full cursor-pointer'
                 >
-                  <option value="" selected disabled>
-                    Selectionner le sexe
-                  </option>
-                  <option value="masculin">Masculin</option>
-                  <option value="feminin">Feminin</option>
-                </Field>
-                <ErrorMessage
-                  name="sexe"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
+                  <div className="absolute border-gray-400 border-[2px] bg-white dark:bg-[#202020] text-gray-400 rounded-full grid place-content-center bottom-0 px-1 py-1 -right-0">
+                    <IoMdCamera className=" text-[20px]" />
+                  </div>
+
+                  {photoPreview ? (
+                    <div className='w-32 h-32 overflow-hidden rounded-full'>
+                      <img src={photoPreview} className='object-cover w-full h-full' alt="Aperçu" />
+                    </div>
+                  ) : (
+                    <div className="grid w-32 h-32 text-gray-400 bg-white rounded-full place-content-center dark:bg-[#202020ab]">
+                      <FaUser className='text-[4em]' />
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    name="photos"
+                    ref={inputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(event) => handleImageChange(event, setFieldValue)}
+                  />
+                  <ErrorMessage
+                    name="photos"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+              </div>
+              <div className="grid w-full grid-cols-2 gap-2">
+
+                {/* Champ Nom */}
+                <div>
+                  <Field
+                    name="nom"
+                    type="text"
+                    placeholder="Nom"
+                    className={`tailwind-form ${errors.nom && touched.nom
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="nom"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ Prénom */}
+                <div>
+                  <Field
+                    name="prenom"
+                    type="text"
+                    placeholder="Prenom"
+                    className={`tailwind-form ${errors.prenom && touched.prenom
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="prenom"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ adresse */}
+                <div>
+                  <Field
+                    name="adresse"
+                    type="text"
+                    placeholder="Adresse"
+                    className={`tailwind-form ${errors.adresse && touched.adresse
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="adresse"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ contact */}
+                <div>
+                  <Field
+                    name="contact"
+                    type="text"
+                    placeholder="Contact"
+                    className={`tailwind-form ${errors.contact && touched.contact
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="contact"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ CIN */}
+                <div>
+                  <Field
+                    name="cin"
+                    type="text"
+                    placeholder="CIN"
+                    className={`tailwind-form ${errors.cin && touched.cin
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="cin"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ date de naissance */}
+                <div>
+                  <Field
+                    title="date de naissance"
+                    name="date_naissance"
+                    type="date"
+                    className={`tailwind-form ${errors.date_naissance &&
+                      touched.date_naissance
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="date_naissance"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ Sexe (Select) */}
+                <div>
+                  <Field
+                    name="sexe"
+                    as="select"
+                    className={`tailwind-form ${errors.sexe && touched.sexe
+                      ? "border-red-500"
+                      : ""} `}
+                  >
+                    <option value="" selected disabled>
+                      Selectionner le sexe
+                    </option>
+                    <option value="masculin">Masculin</option>
+                    <option value="feminin">Feminin</option>
+                  </Field>
+                  <ErrorMessage
+                    name="sexe"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
               </div>
 
               {/* Bouton de soumission */}
@@ -361,6 +524,10 @@ const Personnel = () => {
             prenom: donne_lines ? donne_lines.prenom : '',
             date_naissance: donne_lines ? donne_lines.date_naissance : '',
             sexe: donne_lines ? donne_lines.sexe : '',
+            adresse: donne_lines ? donne_lines.adresse : '',
+            contact: donne_lines ? donne_lines.contact : '',
+            cin: donne_lines ? donne_lines.cin : '',
+            photos: null,
           }}
           enableReinitialize
           validationSchema={RegEx_personnel}
@@ -371,8 +538,19 @@ const Personnel = () => {
             formData.append("prenom", values.prenom);
             formData.append("date_naissance", values.date_naissance);
             formData.append("sexe", values.sexe);
+            formData.append("adresse", values.adresse); // Ajouter les champs supplémentaires
+            formData.append("contact", values.contact);
+            formData.append("cin", values.cin);
+            // Ajouter la photo au FormData si elle est fournie
+            if (values.photos) {
+              formData.append("photos", values.photos);
+            }
             axios
-              .post("http://localhost:8000/api/modifie_personnel", formData)
+              .post("http://localhost:8000/api/modifie_personnel", formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
               .then(response => {
                 hide_blur();
                 enqueueSnackbar(response.data.message, { variant: "success" });
@@ -388,82 +566,171 @@ const Personnel = () => {
               });
           }}
         >
-          {({ errors, touched }) =>
+          {({ errors, touched, setFieldValue }) =>
             <Form className="p-4 space-y-4">
-              <Field
-                name="id_personnel"
-                type="hidden" />
-              {/* Champ Nom */}
-              <div>
-                <Field
-                  name="nom"
-                  type="text"
-                  placeholder="Nom"
-                  className={`tailwind-form ${errors.nom && touched.nom
-                    ? "border-red-500"
-                    : ""} `}
-                />
-                <ErrorMessage
-                  name="nom"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
-              </div>
 
-              {/* Champ Prénom */}
-              <div>
-                <Field
-                  name="prenom"
-                  type="text"
-                  placeholder="Prenom"
-                  className={`tailwind-form ${errors.prenom && touched.prenom
-                    ? "border-red-500"
-                    : ""} `}
-                />
-                <ErrorMessage
-                  name="prenom"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
-              </div>
-
-              {/* Champ date de naissance */}
-              <div>
-                <Field
-                  name="date_naissance"
-                  type="date"
-                  className={`tailwind-form ${errors.date_naissance &&
-                    touched.date_naissance
-                    ? "border-red-500"
-                    : ""} `}
-                />
-                <ErrorMessage
-                  name="date_naissance"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
-              </div>
-
-              {/* Champ Sexe (Select) */}
-              <div>
-                <Field
-                  name="sexe"
-                  as="select"
-                  className={`tailwind-form ${errors.sexe && touched.sexe
-                    ? "border-red-500"
-                    : ""} `}
+              {/* Photo avec avatar */}
+              <div className="grid w-full py-2 rounded-lg place-content-center bg-bleue_union_500 dark:bg-[#202020ab]">
+                <div
+                  onClick={() => modifinputRef.current.click()}
+                  className='flex relative flex-col items-center justify-center w-32 h-32 text-white border-[4px] rounded-full cursor-pointer'
                 >
-                  <option value="" selected disabled>
-                    Selectionner le sexe
-                  </option>
-                  <option value="masculin">Masculin</option>
-                  <option value="feminin">Feminin</option>
-                </Field>
-                <ErrorMessage
-                  name="sexe"
-                  component="div"
-                  className="mt-1 text-sm text-red-500"
-                />
+                  <div className="absolute border-gray-400 border-[2px] bg-white dark:bg-[#202020] text-gray-400 rounded-full grid place-content-center bottom-0 px-1 py-1 -right-0">
+                    <IoMdCamera className=" text-[20px]" />
+                  </div>
+
+                  {photoPreviewModif ? (
+                    <div className='w-32 h-32 overflow-hidden rounded-full'>
+                      <img src={photoPreviewModif} className='object-cover w-full h-full' alt="Aperçu" />
+                    </div>
+                  ) : (
+                    <div className="grid w-32 h-32 text-gray-400 bg-white rounded-full place-content-center dark:bg-[#202020ab]">
+                      <FaUser className='text-[4em]' />
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    name="photos"
+                    ref={modifinputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(event) => handleImageChangeModif(event, setFieldValue)}
+                  />
+                  <ErrorMessage
+                    name="photos"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+              </div>
+              <div className="grid w-full grid-cols-2 gap-2">
+
+                {/* Champ Nom */}
+                <div>
+                  <Field
+                    name="nom"
+                    type="text"
+                    placeholder="Nom"
+                    className={`tailwind-form ${errors.nom && touched.nom
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="nom"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ Prénom */}
+                <div>
+                  <Field
+                    name="prenom"
+                    type="text"
+                    placeholder="Prenom"
+                    className={`tailwind-form ${errors.prenom && touched.prenom
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="prenom"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ adresse */}
+                <div>
+                  <Field
+                    name="adresse"
+                    type="text"
+                    placeholder="Adresse"
+                    className={`tailwind-form ${errors.adresse && touched.adresse
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="adresse"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ contact */}
+                <div>
+                  <Field
+                    name="contact"
+                    type="text"
+                    placeholder="Contact"
+                    className={`tailwind-form ${errors.contact && touched.contact
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="contact"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ CIN */}
+                <div>
+                  <Field
+                    name="cin"
+                    type="text"
+                    placeholder="CIN"
+                    className={`tailwind-form ${errors.cin && touched.cin
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="cin"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ date de naissance */}
+                <div>
+                  <Field
+                    title="date de naissance"
+                    name="date_naissance"
+                    type="date"
+                    className={`tailwind-form ${errors.date_naissance &&
+                      touched.date_naissance
+                      ? "border-red-500"
+                      : ""} `}
+                  />
+                  <ErrorMessage
+                    name="date_naissance"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
+                {/* Champ Sexe (Select) */}
+                <div>
+                  <Field
+                    name="sexe"
+                    as="select"
+                    className={`tailwind-form ${errors.sexe && touched.sexe
+                      ? "border-red-500"
+                      : ""} `}
+                  >
+                    <option value="" selected disabled>
+                      Selectionner le sexe
+                    </option>
+                    <option value="masculin">Masculin</option>
+                    <option value="feminin">Feminin</option>
+                  </Field>
+                  <ErrorMessage
+                    name="sexe"
+                    component="div"
+                    className="mt-1 text-sm text-red-500"
+                  />
+                </div>
+
               </div>
 
               {/* Bouton de soumission */}
@@ -474,9 +741,12 @@ const Personnel = () => {
                 <FaSave />
                 <span className="text-[13px]">Enregistrer</span>
               </button>
-            </Form>}
+            </Form>
+
+          }
         </Formik>
       </div>
+
 
       {/* div pour suprimer les Personnel  */}
       <div
@@ -526,12 +796,12 @@ const Personnel = () => {
             <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4 dark:bg-[#42424232] dark:text-gray-300">
               <div className="text-[13px] flex items-center justify-between">
                 <font className="text-gray-900 dark:text-gray-300">
-                Taux masculinité
+                  Taux masculinité
                 </font>
                 <GiMale className="text-orange_union" />
               </div>
               <p className="text-[11px] text-gray-400 mt-4">
-              Ce rapport montre la totalité des données. Voici le taux de masculinité
+                Ce rapport montre la totalité des données. Voici le taux de masculinité
               </p>
               {/* ilay personnel boribory  */}
               <div className="mt-2 mb-7">
@@ -539,30 +809,33 @@ const Personnel = () => {
                   {
                     avatar_masculin.map((a, index) => (
 
-                      <div key={index} className="flex items-center justify-center w-8 h-8 px-2 font-bold border-orange-500 text-orange-500 bg-orange-300 border-[2px] rounded-full">
-                        {a.avatar}
-                      </div>
+                      a.photos ?
+                        <img src={`http://127.0.0.1:8000/storage/${a.photos}`} className="w-8 h-8 rounded-full border-[2px]" />
+                        :
+                        <div key={index} className="flex items-center justify-center w-8 h-8 px-2 font-bold border-orange-500 text-orange-500 bg-orange-300 border-[2px] rounded-full">
+                          {a.avatar}
+                        </div>
                     ))
                   }
 
                   <div className="flex items-center justify-center w-8 h-8  text-gray-500 bg-gray-50 border-[2px] dark:bg-[#1d1d1d] dark:border-[#131313] dark:text-white  rounded-full border-gray-300 text-[12px]">
                     +{masculin_total ?
                       <>
-                         {
-                            masculin_total >= 7 ?
-                            <> 
-                             {masculin_total - 6}
+                        {
+                          masculin_total >= 7 ?
+                            <>
+                              {masculin_total - 6}
                             </>
                             :
                             <>0</>
-                         }
-                      
+                        }
+
                       </>
                       :
-                      
+
                       <>0</>
-                      
-                     }
+
+                    }
                   </div>
                 </div>
                 <div className="my-4">
@@ -600,12 +873,12 @@ const Personnel = () => {
             <div className="shadow rounded-[1em] h-auto w-full bg-white py-2 px-4 dark:bg-[#42424232] dark:text-gray-300">
               <div className="text-[13px] flex items-center justify-between">
                 <font className="text-gray-900 dark:text-gray-300">
-                Taux féminité
+                  Taux féminité
                 </font>
                 <GiFemale className="text-bleue_union_500" />
               </div>
               <p className="text-[11px] text-gray-400 mt-4">
-              Ce rapport montre la totalité des données. Voici le taux de féminité.
+                Ce rapport montre la totalité des données. Voici le taux de féminité.
               </p>
               {/* ilay personnel boribory  */}
               <div className="mt-2 mb-7">
@@ -614,30 +887,33 @@ const Personnel = () => {
                   {
                     avatar_feminin.map((a, index) => (
 
-                      <div key={index} className="flex items-center justify-center w-8 h-8 px-2 font-bold border-blue-500 text-blue-500 bg-blue-300 border-[2px] rounded-full">
-                        {a.avatar}
-                      </div>
+                      a.photos ?
+                        <img src={`http://127.0.0.1:8000/storage/${a.photos}`} className="w-8 h-8 rounded-full border-[2px]" />
+                        :
+                        <div key={index} className="flex items-center justify-center w-8 h-8 px-2 font-bold border-bleue_union_500 text-bleue_union_500 bg-blue-300 border-[2px] rounded-full">
+                          {a.avatar}
+                        </div>
                     ))
                   }
 
                   <div className="flex items-center justify-center w-8 h-8  dark:bg-[#1d1d1d] dark:border-[#131313] dark:text-white text-gray-500 bg-gray-50 border-[2px]  rounded-full border-gray-300 text-[12px]">
-                  +{feminin_total ?
+                    +{feminin_total ?
                       <>
-                         {
-                            feminin_total >= 5 ?
-                            <> 
-                             {feminin_total - 4}
+                        {
+                          feminin_total >= 5 ?
+                            <>
+                              {feminin_total - 4}
                             </>
                             :
                             <>0</>
-                         }
-                      
+                        }
+
                       </>
                       :
-                      
+
                       <>0</>
-                      
-                     }
+
+                    }
                   </div>
                 </div>
                 <div className="my-4">

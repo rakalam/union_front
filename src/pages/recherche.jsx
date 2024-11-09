@@ -175,14 +175,21 @@ const Recherche = () => {
                                                         retard.map((p, index) => (
                                                             <tr key={index} className="border-b border-b-gray-200 dark:border-b-[#222222]">
                                                                 <td className="flex items-center justify-center">
-                                                                    {" "}
-                                                                    <div className="flex items-center justify-center w-full">
-                                                                        <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
-                                                         border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                                                                                : "border-orange-500 text-white bg-orange-300"}`}>
-                                                                            {p.personnel.avatar}
-                                                                        </div>
-                                                                    </div>
+                                                                    {
+                                                                        p.personnel.photos ?
+                                                                            <div className="flex items-center justify-center">
+                                                                                <img src={`http://127.0.0.1:8000/storage/${p.personnel.photos}`} className="w-8 h-8 rounded-full border-[2px] my-1" />
+                                                                            </div>
+                                                                            :
+                                                                            <div className="flex items-center justify-center">
+                                                                                <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
+                                                                      border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                                                                                        : "border-orange-500 text-white bg-orange-300"}`}>
+                                                                                    {p.personnel.avatar}
+                                                                                </div>
+                                                                            </div>
+
+                                                                    }
                                                                 </td>
                                                                 <td>{p.personnel.identifiant}</td>
                                                                 <td>{p.personnel.prenom}</td>
@@ -250,14 +257,21 @@ const Recherche = () => {
                                                         absent.map((p, index) => (
                                                             <tr key={index} className="border-b border-b-gray-200 dark:border-b-[#222222]">
                                                                 <td className="flex items-center justify-center">
-                                                                    {" "}
-                                                                    <div className="flex items-center justify-center w-full">
-                                                                        <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
-                                                         border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                                                                                : "border-orange-500 text-white bg-orange-300"}`}>
-                                                                            {p.personnel.avatar}
-                                                                        </div>
-                                                                    </div>
+                                                                    {
+                                                                        p.personnel.photos ?
+                                                                            <div className="flex items-center justify-center">
+                                                                                <img src={`http://127.0.0.1:8000/storage/${p.personnel.photos}`} className="w-8 h-8 rounded-full border-[2px] my-1" />
+                                                                            </div>
+                                                                            :
+                                                                            <div className="flex items-center justify-center">
+                                                                                <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
+                                                                      border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                                                                                        : "border-orange-500 text-white bg-orange-300"}`}>
+                                                                                    {p.personnel.avatar}
+                                                                                </div>
+                                                                            </div>
+
+                                                                    }
                                                                 </td>
                                                                 <td>{p.personnel.identifiant}</td>
                                                                 <td>{p.personnel.prenom}</td>

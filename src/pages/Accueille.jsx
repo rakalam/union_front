@@ -52,7 +52,7 @@ const Accueille = () => {
               <img src="../image_union/logo_union.svg" alt="logo" className="w-8" />
             </div>
             <div className="ml-2">
-              <p className="font-bold">Union</p>
+              <p className="font-bold">Service Union</p>
             </div>
           </div>
 
@@ -62,8 +62,8 @@ const Accueille = () => {
         </div>
 
         <div className='w-[28rem] sm:w-[30rem] z-30 rounded mx-[6vw] text-center sm:text-start text-gray-900 aa'>
-          <h6 className="text-[3em] font-extrabold c1">Gestion des personnels</h6>
-          <h6 className="text-[3em] font-extrabold c2">Suivi des pointages</h6>
+          <h1 className="text-[3em] font-extrabold c1">Gestion des personnels</h1>
+          <h1 className="text-[3em] font-extrabold c2">Suivi des pointages</h1>
           <p className='text-gray-600 c3'>
             Optimisez la gestion des présences et absences avec des outils d'analyse avancés. Simplifiez les tâches administratives !
           </p>

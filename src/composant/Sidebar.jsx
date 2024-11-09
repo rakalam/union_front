@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsFillBarChartLineFill } from "react-icons/bs";
 import { FaUserTie, FaArrowLeft, FaSignOutAlt, FaChartLine, FaUser, FaUserAlt, FaUserCheck } from "react-icons/fa";
 import { AiOutlineLogin, AiOutlineSchedule } from "react-icons/ai";
@@ -11,9 +11,9 @@ import { FaArrowRight, FaUserGroup } from "react-icons/fa6";
 
 const Sidebar = () => {
   const [activelink, setActivelink] = useState(0);
-  const ary =useNavigate()
-  const dec =()=>{
-     ary('/')
+  const ary = useNavigate()
+  const dec = () => {
+    ary('/')
   }
   const clic_lien = (index) => {
     setActivelink(index);
@@ -37,6 +37,10 @@ const Sidebar = () => {
   };
 
 
+  const location = useLocation()
+  const isActive = (path) => location.pathname === path
+
+
 
 
   const SIDEBAR_LINK = [
@@ -51,12 +55,12 @@ const Sidebar = () => {
   return (
     <div className="fixed top-0 left-0 z-10 w-16 px-3 pt-4 duration-100 bg-white h-[100%] lg:w-56 dark:bg-[#42424232] dark:text-white shadow overflow-hidden">
       {/* logo */}
-      <div className="flex items-end w-full mb-3 lg:px-5">
+      <div className="flex items-end w-full mb-3 lg:px-1">
         <div className="rounded">
           <img src="../../image_union/logo_union.svg" alt="logo" className="w-8" />
         </div>
-        <div className="hidden ml-4 lg:block">
-          <p className="font-bold">Union</p>
+        <div className="hidden lg:block">
+          <p className="">Service Union</p>
         </div>
       </div>
       {/* <hr /> */}
@@ -64,16 +68,18 @@ const Sidebar = () => {
       {/* link  */}
 
       <ul className="mt-10 space-y-5 ">
-        {SIDEBAR_LINK.map((link, index) => (
-        
+        {SIDEBAR_LINK.map((link, index) => {
+          const active = isActive(link.path)
+          return (
             <li
-              key={index}
+              key={link.path}
               title={link.name}
               className={`font-medium rounded
                  lg:px-5 py-2 hover:border-l-orange_union hover:border-l-4
                   hover:bg-gray-100 dark:hover:bg-gray-700 hover:md:px-7 
                   duration-100 lg:w-full
-              ${activelink === index ? 'bg-gray-200 border-l-4 border-l-orange_union dark:bg-gray-700' : ''
+              ${
+                active ? 'bg-gray-200 border-l-4 border-l-orange_union dark:bg-gray-700' : ''
                 }`}
             >
               <Link
@@ -92,34 +98,22 @@ const Sidebar = () => {
                   {link.name}
                 </span>
 
-                {/* <span
-                  id={"id" + link.id}
-                  style={{
-                    left: "15vw",
-                    opacity: "0",
-                  }}
-                  className="absolute z-50 px-4 py-1 font-semibold text-gray-900 duration-200 bg-gray-100 rounded shadow-sm lg:hidden"
-                >
-                  {link.name}
-                </span> */}
               </Link>
             </li>
-        ))}
+          )
+        })}
       </ul>
 
-      <div>
-        <img src="../../image_union/pers.png" alt="" srcset="" />
-      </div>
 
-      <div 
-      title="deconnexion"
-      onClick={dec}
-      onMouseEnter={entrer_dec}
-       onMouseLeave={sortir_dec} 
-       className="absolute left-0 flex items-center justify-center w-16 lg:w-full py-2 space-x-4 text-white cursor-pointer bg-bleue_union_500 bottom-4">
-        <AiOutlineLogin/>
+      <div
+        title="deconnexion"
+        onClick={dec}
+        onMouseEnter={entrer_dec}
+        onMouseLeave={sortir_dec}
+        className="absolute left-0 flex items-center justify-center w-16 py-2 space-x-4 text-white cursor-pointer lg:w-full bg-bleue_union_500 bottom-4">
+        <AiOutlineLogin />
         <span className="hidden lg:flex" >Deconnexion</span>
-       
+
       </div>
     </div>
   );

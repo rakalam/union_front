@@ -95,12 +95,24 @@ const ListePlanning = ({ listePlanning, planningPerPage, totalPlanning, paginate
 
                 <tr className='border-b border-gray-300 dark:border-b-[#2c2b2b]' key={index}>
                   <td>
-                    <div className='flex items-center justify-between px-3 py-2 rounded'>
-                      <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold  border-[2px]  rounded-full 
-                           ${l.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                          : "border-orange-500 text-white bg-orange-300"}`}>
-                        {l.personnel.avatar}
-                      </div>
+                    <div className='flex items-center justify-between px-3 py-1 rounded'>
+                      {
+                        l.personnel.photos ?
+                          <div className="flex items-center justify-center">
+                            <img src={`http://127.0.0.1:8000/storage/${l.personnel.photos}`} className="w-8 h-8 rounded-full border-[2px]" />
+                          </div>
+                          :
+                          <div className="flex items-center justify-center">
+                            <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
+                                       border-[2px]  rounded-full  ${l.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                                : "border-orange-500 text-white bg-orange-300"}`}>
+                               {l.personnel.avatar}
+                            </div>
+                          </div>
+
+                      }
+
+             
                       <div className='flex flex-col items-end justify-center -space-y-1'>
                         <font>{l.personnel.identifiant}</font>
                         <p className='text-[11px]'>{l.personnel.prenom}</p>

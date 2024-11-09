@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import { FaCamera, FaCheckCircle, FaClock, FaGlobeAfrica, FaPause, FaSchool, FaStop, FaSun, FaUpload } from "react-icons/fa";
 import { FaAngleLeft, FaCameraRetro, FaGlobe, FaMoon, FaPagelines, FaSchoolCircleCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-
+import { VscCallIncoming, VscCodeOss  } from "react-icons/vsc";
+import { PiGenderIntersexBold, PiHouseLight  } from "react-icons/pi";
 const Info_personnel = ({ }) => {
 
   const ary = useNavigate()
-  const { id } = useParams()
+
+  const location = useLocation()
+  const id = location.state || ''
   const [pointage_retard, setPointage_retard] = useState([]);
   const [pointage_absent, setPointage_absent] = useState([]);
   const [pl, setPlanning_personnel] = useState('');
@@ -53,9 +56,8 @@ const Info_personnel = ({ }) => {
   };
 
   useEffect(() => {
-     select_absent_planning_retard_personnel() 
+    select_absent_planning_retard_personnel()
     console.log(id);
-
   }, [])
 
   return (
@@ -96,21 +98,25 @@ const Info_personnel = ({ }) => {
                 <font className="mx-2 mb-4 md:hidden">Information Personnel</font>
                 <div title="Retour à la liste"
                   onClick={showListePersonnel}
-                  className="flex cursor-pointer items-center justify-center w-8 h-8   rounded-full text-gray-900 border-[2px] border-gray-900 md:hidden">
+                  className="flex cursor-pointer items-center justify-center w-8 h-8   rounded-full text-gray-900 border-[2px] border-gray-900 md:hidden dark:text-gray-200 dark:border-gray-200">
                   <IoMdClose />
                 </div>
               </div>
 
-              <div className="absolute  w-full h-[12vh] bg-gradient-to-br from-blue-200 via-[#58ddf4]  to-bleue_union_500 -z-10" style={{ borderRadius: '1em 1em 0 0' }}> </div>
+              <div className="absolute  w-full h-[13.1vh] bg-gradient-to-br from-blue-200 via-[#58ddf4]  to-bleue_union_500 -z-10" style={{ borderRadius: '1em 1em 0 0' }}> </div>
               <div className="z-50 flex items-center justify-center w-full mt-4">
 
                 <div className="flex items-center relative justify-center w-28 h-28 bg-gradient-to-br from-blue-200 via-[#58ddf4]  to-bleue_union_500  rounded-full text-white text-[3em] font-bold shadow border-[2px] border-white">
-                  <p>
-                    {donne_unique_personnel.avatar}
-                  </p>
-                  <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-jaune_union_500 via-orange_union_100  to-orange_union  text-white rounded-full absolute top-[65%] right-0 text-[14px] shadow border border-white">
-                    <FaCamera />
-                  </div>
+
+                  {
+                    donne_unique_personnel.photos ?
+                      <img src={`http://127.0.0.1:8000/storage/${donne_unique_personnel.photos}`} className="rounded-full w-28 h-28" />
+                      :
+                      <p>
+                        {donne_unique_personnel.avatar}
+                      </p>
+                  }
+
                 </div>
               </div>
 
@@ -127,23 +133,43 @@ const Info_personnel = ({ }) => {
 
                 <span className="flex items-center justify-between">
                   <p> <font>Naissance</font> : {donne_unique_personnel.date_naissance}</p> <br />
-                  <div className="text-orange_union  bg-[#ffa60064] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-orange_union"> <FaSchool /></div>
+                  <div
+                    className="text-bleue_union_500  bg-[#09aac632] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-bleue_union_500">
+                    <FaSchool />
+                  </div>
+                </span>
+
+                <span className="flex items-center justify-between">
+                  <p><font>Adresse</font> : {donne_unique_personnel.adresse}</p>
+                  <div
+                    className="text-bleue_union_500 bg-[#09aac632] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-bleue_union_500">
+                    <PiHouseLight />
+                  </div>
+                </span>
+
+                <span className="flex items-center justify-between">
+                  <p><font>Contact</font> : {donne_unique_personnel.contact}</p>
+                  <div className="text-bleue_union_500 bg-[#09aac632] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-bleue_union_500">
+                    <VscCallIncoming />
+                  </div>
+                </span>
+
+                <span className="flex items-center justify-between">
+                  <p><font>CIN</font> : {donne_unique_personnel.cin}</p>
+                  <div className="text-bleue_union_500 bg-[#09aac632] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-bleue_union_500">
+                    <VscCodeOss />
+                  </div>
                 </span>
 
                 <span className="flex items-center justify-between">
                   <p><font>Sexe</font> : {donne_unique_personnel.sexe}</p>
-                  <div className="text-bleue_union_500 bg-[#09aac632] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-bleue_union_500"> <FaPagelines /></div>
+                  <div className="text-bleue_union_500 bg-[#09aac632] rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-bleue_union_500">
+                    <PiGenderIntersexBold />
+                  </div>
                 </span>
 
 
-              </div>
-              <hr className="" />
-              <hr className="mt-4" />
-              <div className="px-3 py-2 my-2 cursor-pointer">
-                <span className="flex items-center justify-between">
-                  <p className=""><font>Place Profile</font></p>
-                  <button className="text-white bg-gradient-to-br from-jaune_union_500 via-orange_union_100  to-orange_union  cursor-pointer rounded-full w-6 h-6 flex items-center justify-center border-[2px] border-jaune_union_500"> <FaUpload /></button>
-                </span>
+
               </div>
 
 
@@ -563,20 +589,28 @@ const Info_personnel = ({ }) => {
                         pointage_retard.map((p, index) => (
                           <tr key={index} className="border-b border-b-gray-200 dark:border-b-[#1f1e1e]">
                             <td className="flex items-center justify-center">
-                              {" "}
-                              <div className="flex items-center justify-center w-full">
-                                <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
-                                 border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                                    : "border-orange-500 text-white bg-orange-300"}`}>
-                                  {p.personnel.avatar}
-                                </div>
-                              </div>
+
+                              {
+                                p.personnel.photos ?
+                                  <div className="flex items-center justify-center w-full">
+                                    <img src={`http://127.0.0.1:8000/storage/${p.personnel.photos}`} className="w-8 h-8 rounded-full border-[2px] my-1" />
+                                  </div>
+                                  :
+                                  <div className="flex items-center justify-center w-full">
+                                    <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
+                                    border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                                        : "border-orange-500 text-white bg-orange-300"}`}>
+                                      {p.personnel.avatar}
+                                    </div>
+                                  </div>
+                              }
+
                             </td>
                             <td>{p.jour}</td>
                             <td>{
-                               format(new Date(p.date_retard), 'd MMM yyyy', { locale: fr })
+                              format(new Date(p.date_retard), 'd MMM yyyy', { locale: fr })
 
-                          
+
                             }</td>
                             <td>{p.nb_heure_retard}</td>
                           </tr>
@@ -614,19 +648,26 @@ const Info_personnel = ({ }) => {
                         pointage_absent.map((p, index) => (
                           <tr key={index} className="border-b border-b-gray-200 dark:border-b-[#1f1e1e]">
                             <td className="flex items-center justify-center">
-                              {" "}
-                              <div className="flex items-center justify-center w-full">
-                                <div className={`flex items-center justify-center w-8 h-8 px-2 my-1 font-bold
-                           border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                                    : "border-orange-500 text-white bg-orange-300"}`}>
-                                  {p.personnel.avatar}
-                                </div>
-                              </div>
+
+                              {
+                                p.personnel.photos ?
+                                  <div className="flex items-center justify-center w-full">
+                                    <img src={`http://127.0.0.1:8000/storage/${p.personnel.photos}`} className="w-8 h-8 rounded-full border-[2px] my-1" />
+                                  </div>
+                                  :
+                                  <div className="flex items-center justify-center w-full">
+                                    <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
+                                    border-[2px]  rounded-full  ${p.personnel.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                                        : "border-orange-500 text-white bg-orange-300"}`}>
+                                      {p.personnel.avatar}
+                                    </div>
+                                  </div>
+                              }
                             </td>
                             <td>{p.personnel.identifiant}</td>
                             <td>{
-                               format(new Date(p.date_absent), 'd MMM yyyy', { locale: fr })
-                            
+                              format(new Date(p.date_absent), 'd MMM yyyy', { locale: fr })
+
                             }</td>
                           </tr>
                         ))

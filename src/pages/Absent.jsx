@@ -109,13 +109,26 @@ const Absent = () => {
       identifiant: item.personnel?.identifiant || 'N/A',
       prenom: item.personnel?.prenom || 'N/A',
       sexe: item.personnel?.sexe || 'N/A',
+      photos: item.personnel?.photos,
 
     }));
   };
   // Charger les données au montage du composant
   useEffect(() => {
-    select_absent();
-    select_personnel()
+    // Fonction pour exécuter toutes les requêtes en parallèle
+    const fetchData = async () => {
+      try {
+        // Attendre que toutes les requêtes soient complétées en parallèle
+        await Promise.all([
+          select_absent(),
+          select_personnel()
+        ]);
+      } catch (error) {
+        console.error("Une erreur s'est produite lors du chargement des données :", error);
+      }
+    };
+    // Appel de la fonction fetchData au chargement du composant
+    fetchData();
   }, []);
   // Transformer `donne` dès qu’il est mis à jour
   useEffect(

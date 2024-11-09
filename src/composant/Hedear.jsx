@@ -37,6 +37,7 @@ const Hedear = () => {
         enqueueSnackbar(response.data.message, {
           variant: "success"
         });
+        ary('/logic/mis_a_jour')
       })
       .catch(er => {
         console.log(er);

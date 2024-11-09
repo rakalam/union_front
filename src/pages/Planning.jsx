@@ -118,9 +118,21 @@ const Planning = () => {
   };
 
   useEffect(() => {
-    select_planning()
-    select_personnel()
-  }, [])
+    // Fonction pour exécuter toutes les requêtes en parallèle
+    const fetchData = async () => {
+      try {
+        // Attendre que toutes les requêtes soient complétées en parallèle
+        await Promise.all([
+          select_planning(),
+          select_personnel()
+        ]);
+      } catch (error) {
+        console.error("Une erreur s'est produite lors du chargement des données :", error);
+      }
+    };
+    // Appel de la fonction fetchData au chargement du composant
+    fetchData();
+  }, []);
 
   // Filtrer les données en fonction de la recherche
   const filteredData = planningCourant.filter((item) =>

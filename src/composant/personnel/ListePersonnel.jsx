@@ -37,14 +37,20 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout, show_div_supression
         customBodyRenderLite: (dataIndex) => {
           const photos = donne_table_trans[dataIndex].avatar
           const sexe = donne_table_trans[dataIndex].sexe
+          const photos_vrai = donne_table_trans[dataIndex].photos
           return (
-            <div className="flex items-center justify-center w-full">
-              <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
-                    border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                  : "border-orange-500 text-white bg-orange-300"}`}>
-                {photos}
+            photos_vrai ?
+              <div className="flex items-center justify-center w-full">
+                <img src={`http://127.0.0.1:8000/storage/${photos_vrai}`} className="w-8 h-8 rounded-full border-[2px]" />
               </div>
-            </div>
+              :
+              <div className="flex items-center justify-center w-full">
+                <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
+                  border-[2px]  rounded-full  ${sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                    : "border-orange-500 text-white bg-orange-300"}`}>
+                  {photos}
+                </div>
+              </div>
           );
         },
         filter: false
@@ -77,11 +83,13 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout, show_div_supression
       label: 'sexe',
       options: {
         customBodyRender: (value) => (
-          <div className={`flex items-center justify-center px-1 py-0.5 rounded-full text-gray-950 font-extrabold space-x-2 dark:bg-[#282828a2]  dark:text-white
+          <div className={`flex items-center justify-center px-1 py-0.5 rounded-full text-gray-950 font-extrabold space-x-2 dark:bg-[#282828a2]  dark:text-gray-200
             ${value === "masculin" ? "bg-gray-300" : "bg-gray-200"}
           `}>
             <FaDotCircle className={` ${value === "masculin" ? "text-bleue_union_500" : "text-orange_union"}`} />
-            <span>{value}</span>
+            <span>
+              {value}
+            </span>
           </div>
         )
       }
@@ -123,7 +131,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout, show_div_supression
             <div className="flex items-center justify-center space-x-2">
               <div
                 onClick={() => show_infoPersonnel(id)}
-                className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="modifier">
+                className="flex items-center justify-center w-6 h-6 font-bold text-gray-400 border-gray-400 rounded-full border-[1px] cursor-pointernter cursor-pointer" title="information détaillés">
                 <FaInfo />
               </div>
 

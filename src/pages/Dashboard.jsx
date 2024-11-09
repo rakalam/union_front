@@ -113,21 +113,39 @@ const Dashboard = () => {
         setFeminin_total(response.data.feminin_total)
         setPourcentage_masculin(parseInt(response.data.pourcentage_masculin))
         setPourcentage_feminin(parseInt(response.data.pourcentage_feminin))
-        console.log(parseInt(response.data.pourcentage_feminin));
-        console.log(parseInt(response.data.pourcentage_masculin));
-
+        
       })
       .catch(error => {
         console.error(error);
       });
   };
 
+  // useEffect(() => {
+  //   select_activite()
+  //   select_sanction()
+  //   select_statistique_personnels()
+  //   select_total_pointage_suivant_les_sexes()
+  // }, [])
+
   useEffect(() => {
-    select_activite()
-    select_sanction()
-    select_statistique_personnels()
-    select_total_pointage_suivant_les_sexes()
-  }, [])
+    // Fonction pour exécuter toutes les requêtes en parallèle
+    const fetchData = async () => {
+      try {
+        // Attendre que toutes les requêtes soient complétées en parallèle
+        await Promise.all([
+          select_activite(),
+          select_sanction(),
+          select_statistique_personnels(),
+          select_total_pointage_suivant_les_sexes(),
+        ]);
+      } catch (error) {
+        console.error("Une erreur s'est produite lors du chargement des données :", error);
+      }
+    };
+
+    // Appel de la fonction fetchData au chargement du composant
+    fetchData();
+  }, []);
 
   return (
     <div className="text-gray-900 h-[100%] p-3 dark:text-gray-100">
@@ -372,7 +390,7 @@ const Dashboard = () => {
                   <ImSpinner11 />
                   <p>Desordre</p>
                 </button>
-               
+
 
               </div>
 
@@ -406,14 +424,21 @@ const Dashboard = () => {
 
                       <tr key={index} className="border-b border-b-gray-200 dark:border-b-[#1f1e1e]">
                         <td>
-                          {" "}
-                          <div className="flex items-center justify-center w-full my-1">
-                            <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold
-                             border-[2px]  rounded-full  ${s.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
-                                : "border-orange-500 text-white bg-orange-300"}`}>
-                              {s.avatar}
-                            </div>
-                          </div>
+                          {
+                            s.photos ?
+                              <div className="flex items-center justify-center">
+                                <img src={`http://127.0.0.1:8000/storage/${s.photos}`} className="w-8 h-8 rounded-full border-[2px] my-1" />
+                              </div>
+                              :
+                              <div className="flex items-center justify-center">
+                                <div className={`flex items-center justify-center w-8 h-8 px-2 font-bold my-1
+                                    border-[2px]  rounded-full  ${s.sexe === "masculin" ? "text-white bg-blue-300 border-blue-500"
+                                    : "border-orange-500 text-white bg-orange-300"}`}>
+                                  {s.avatar}
+                                </div>
+                              </div>
+
+                          }
                         </td>
                         <td>{s.identifiant}</td>
                         <td>{s.nom}{" "}{s.prenom}</td>
@@ -434,7 +459,7 @@ const Dashboard = () => {
                           {
                             (s.nb_retard || s.nb_absent) >= 3 ?
                               <>
-                                <font className="text-orange_union">sanctione</font>
+                                <font className="text-orange_union">sanctionner</font>
                               </>
 
                               :
