@@ -202,7 +202,7 @@ const TableExample = ({ show_infoPersonnel, show_form_ajout, show_div_supression
       }),
 
     },
-
+    
     components: {
       MuiTableCell: {
         styleOverrides: {

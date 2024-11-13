@@ -61,7 +61,6 @@ const Planning = () => {
       .get("http://localhost:8000/api/select_planning_simplement")
       .then(response => {
         setListePlanning(response.data.donnes);
-        console.log(response.data.donnes);
       })
       .catch(error => {
         console.error(error);

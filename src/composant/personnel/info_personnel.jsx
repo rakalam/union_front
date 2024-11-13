@@ -638,6 +638,7 @@ const Info_personnel = ({ }) => {
                         <p className="md:hidden">ID</p>
 
                       </th>
+                      <th>Jour</th>
                       <th style={{ borderRadius: '0 4px 4px 0' }}>date d'Absent</th>
 
                     </thead>
@@ -665,6 +666,7 @@ const Info_personnel = ({ }) => {
                               }
                             </td>
                             <td>{p.personnel.identifiant}</td>
+                            <td>{p.jour}</td>
                             <td>{
                               format(new Date(p.date_absent), 'd MMM yyyy', { locale: fr })
 

@@ -103,8 +103,8 @@ const Personnel = () => {
 
   // pour disparaitre le fond floux
   const hide_blur = () => {
-    $(".form_ajout_personnel").animate({ top: "-50%" }, 100);
     $(".form_modification_personnel").animate({ top: "-50%" }, 100);
+    $(".form_ajout_personnel").animate({ top: "-50%" }, 100);
     $(".div_suprimer_personnel").animate({ left: "-50%" }, 100);
     setTimeout(
       () => {
@@ -113,6 +113,9 @@ const Personnel = () => {
       [100]
     );
   };
+
+
+
   //pour apparaitre le fond floux
   const show_blur = () => {
     setBlur(true);
@@ -284,7 +287,7 @@ const Personnel = () => {
           validationSchema={RegEx_personnel}
           onSubmit={(values, { resetForm, setFieldValue }) => {
 
-            handleFormReset(resetForm, setFieldValue);
+          
             const formData = new FormData();
             formData.append("nom", values.nom);
             formData.append("prenom", values.prenom);
@@ -304,12 +307,16 @@ const Personnel = () => {
                 },
               })
               .then(response => {
-                resetForm()
-                hide_blur();
-                enqueueSnackbar(response.data.message, { variant: "success" });
-                select_personnel();
-                setDonne_table_trans(transforme_donner(donne_table));
-                select_statistique_personnels()//polling
+                if(response.data.message === "Une image avec ce nom existe déjà."){
+                  enqueueSnackbar(response.data.message, { variant: "error" });
+                }else{
+                  handleFormReset(resetForm, setFieldValue);
+                  hide_blur();
+                  enqueueSnackbar(response.data.message, { variant: "success" });
+                  select_personnel();
+                  setDonne_table_trans(transforme_donner(donne_table));
+                  select_statistique_personnels()//polling
+                }
 
 
               })
@@ -326,7 +333,7 @@ const Personnel = () => {
             <Form className="p-4 space-y-4">
 
               {/* Photo avec avatar */}
-              <div className="grid w-full py-2 rounded-lg place-content-center bg-bleue_union_500 dark:bg-[#202020ab]">
+              <div className="grid w-full py-2 rounded-lg place-content-center bg-gray-100 dark:bg-[#202020ab]">
                 <div
                   onClick={() => inputRef.current.click()}
                   className='flex relative flex-col items-center justify-center w-32 h-32 text-white border-[4px] rounded-full cursor-pointer'
@@ -491,7 +498,6 @@ const Personnel = () => {
 
               {/* Bouton de soumission */}
               <button
-                onClick={show_form_ajout}
                 className="flex items-center justify-center space-x-3 my-4 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded"
               >
                 <FaSave />
@@ -503,7 +509,7 @@ const Personnel = () => {
 
       {/* formulaire de modification employer  */}
       <div
-        className=" w-[70vw] md:w-[50vw] lg:w-[30vw] h-auto bg-white rounded-[1em] fixed z-50 px-4 py-4 dark:bg-[#121212] dark:text-gray-100 form_modification_personnel"
+        className=" w-[90vw] md:w-[50vw] lg:w-[30vw] h-auto bg-white rounded-[1em] fixed z-50 px-4 py-4 dark:bg-[#121212] dark:text-gray-100 form_modification_personnel"
         style={{
           top: "-50%",
           left: "50%",
@@ -552,11 +558,16 @@ const Personnel = () => {
                 },
               })
               .then(response => {
-                hide_blur();
-                enqueueSnackbar(response.data.message, { variant: "success" });
-                select_personnel(); //polling
-                setDonne_table_trans(transforme_donner(donne_table)); //polling
-                select_statistique_personnels()//polling
+                if(response.data.message === "Une image avec ce nom existe déjà."){
+                  enqueueSnackbar(response.data.message, { variant: "error" });
+                }else{
+                 
+                  hide_blur();
+                  enqueueSnackbar(response.data.message, { variant: "success" });
+                  select_personnel();
+                  setDonne_table_trans(transforme_donner(donne_table));
+                  select_statistique_personnels()//polling
+                }
               })
               .catch(er => {
                 console.log(er);
@@ -570,7 +581,7 @@ const Personnel = () => {
             <Form className="p-4 space-y-4">
 
               {/* Photo avec avatar */}
-              <div className="grid w-full py-2 rounded-lg place-content-center bg-bleue_union_500 dark:bg-[#202020ab]">
+              <div className="grid w-full py-2 rounded-lg place-content-center bg-gray-100 dark:bg-[#202020ab]">
                 <div
                   onClick={() => modifinputRef.current.click()}
                   className='flex relative flex-col items-center justify-center w-32 h-32 text-white border-[4px] rounded-full cursor-pointer'
@@ -735,7 +746,6 @@ const Personnel = () => {
 
               {/* Bouton de soumission */}
               <button
-                onClick={show_form_ajout}
                 className="flex items-center justify-center space-x-3 my-4 sm:text-[12px] text-[1em] px-2 py-1 bg-bleue_union_500 text-white rounded"
               >
                 <FaSave />

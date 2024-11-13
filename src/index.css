@@ -11,6 +11,7 @@
 /* Définition globale de la police pour tous les éléments */
 * {
   font-family: 'myFont', sans-serif;
+  user-select: none;
 }
 
 /* Utilisation de @apply pour des transitions globales */

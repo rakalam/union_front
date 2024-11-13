@@ -15,7 +15,7 @@ const Accueille = () => {
   }
 
   useEffect(() => {
-
+    localStorage.setItem("theme", "dark");
     ScrollReveal({
       reset: true,
       distance: '60px',

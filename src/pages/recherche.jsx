@@ -149,7 +149,7 @@ const Recherche = () => {
 
                                             <img src="../image_union/Outer space-rafiki.svg" alt=""
                                                 className="w-[20rem]"
-                                                srcset="" />
+                                                 />
                                         </div>
 
                                         :
@@ -232,7 +232,7 @@ const Recherche = () => {
 
                                             <img src="../image_union/Outer space-rafiki.svg" alt=""
                                                 className="w-[20rem]"
-                                                srcset="" />
+                                                 />
                                         </div>
 
                                         :
