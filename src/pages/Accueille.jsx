@@ -16,18 +16,6 @@ const Accueille = () => {
 
   useEffect(() => {
     localStorage.setItem("theme", "dark");
-    ScrollReveal({
-      reset: true,
-      distance: '60px',
-      duration: 2000,
-      deley: 400
-    });
-
-    ScrollReveal().reveal('.bb button', { deley: 100, origin: 'top', interval: 300 });
-
-    ScrollReveal().reveal('.aa h6', { deley: 100, origin: 'top', interval: 300 });
-    ScrollReveal().reveal('.aa p', { deley: 100, origin: 'top', interval: 300 });
-
   }, [])
 
   return (

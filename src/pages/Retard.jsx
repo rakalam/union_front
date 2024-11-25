@@ -14,7 +14,6 @@ import $ from "jquery"
 import { RegEx_retard } from "../composant/retard/RegEx_retard";
 import { ClipLoader } from "react-spinners";
 
-
 const Retard = () => {
 
   const [miseho_ajout, setMiseho_ajout] = useState(false)

@@ -37,6 +37,7 @@
     "react-tooltip": "^5.28.0",
     "recharts": "^2.12.7",
     "scrollreveal": "^4.0.9",
+    "tailwind-scrollbar": "^3.1.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
